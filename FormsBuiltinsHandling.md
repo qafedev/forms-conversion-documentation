@@ -1,6 +1,6 @@
 # Oracle Forms Built-in Handling in QAFE#
 
-This document refers to a FMBs with following properties.
+This document refers to FMBs with following properties.
 
 Form Name: FORM1 , Block Name : BLOCK1,BLOCK2 , Item Name : ITEM1, ITEM2, Window Name : WINDOW1, Canvas Name : CANVAS1
 
@@ -417,7 +417,7 @@ QAFE Built-in ```<set-property> ```can be used to convert this functionality.
 ```
 
 
-**Scenario: Change the Update allowed property of item **
+**Scenario: Change the Update allowed property of item**
 
 Form triggers contains code to dynamically change the update/insert allowed properties of items.
 Oracle Form's SET_ITEM_PROPERTY built-in is used to set these properties.
@@ -530,7 +530,7 @@ Now PARAM1 and PARAM2 are available to use in FORM2. Any QAFE event can use thes
 
 
 ### Functionality: Exception Handling ###
-**Scenario: Handling run time exceptions **
+**Scenario: Handling run time exceptions**
 
 Form triggers contains code to handle exceptions.
 Oracle Form's TODO built-in are  used to set these properties.
