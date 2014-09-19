@@ -33,74 +33,78 @@ QAFE_BUILT_IN_LIST is a return value for all procedures generated and QAFE Engin
 
 ## Oracle Forms Built-In : SET_ITEM_PROPERTY
 
-Oracle Forms Syntax :
+**Oracle Forms Syntax :**
 ```sql
  SET_ITEM_PROPERTY('BLOCK1.ITEM1', visible, property_false);
  ```
 
-QAFE Built-In Syntax in Procedure :
+**QAFE Built-In Syntax in Procedure :**
 ```sql
-QAFE_BUILT_IN.SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUILT_IN.property_false);```
+QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUILT_IN.property_false);
+```
 
-QAFE Built-In Executed:
+**QAFE Built-In Executed:**
 
 ```xml
-<set-property property="visible" value="false">
-  <component ref="FORM1$P_BLOCK1$ITEM1"/>
-</set-property>
+  <set-property property="visible" value="false">
+    <component ref="FORM1$BLOCK1$ITEM1"/>
+  </set-property>
+  FORM1$BLOCK1$ITEM1 is the component id generated for ITEM1
 ```
 
 ## Oracle Forms Built-In : SET_ITEM_PROPERTY
 
-Oracle Forms Syntax :
+**Oracle Forms Syntax :**
 ```sql
  SET_ITEM_PROPERTY('BLOCK1.ITEM1', enabled, property_false)
 ```
 
-QAFE Built-In Syntax in Procedure :
+**QAFE Built-In Syntax in Procedure :**
 ```sql
-QAFE_BUILT_IN.SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', QAFE_BUILT_IN.enabled, QAFE_BUILT_IN.property_false);
+  QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.enabled, QAFE_BUILT_IN.property_false);
+  FORM1$BLOCK1$ITEM1 is the component id generated for ITEM1
 ```
 
-QAFE Built-In Executed:
+**QAFE Built-In Executed:**
 
 ```xml
 <set-property property="enabled" value="false">
-  <component ref="FORM1$P_BLOCK1$ITEM1"/>
+  <component ref="FORM1$BLOCK1$ITEM1"/>
 </set-property>
 ```
 ## Oracle Forms Built-In : SET_ITEM_PROPERTY
 
-Oracle Forms Syntax :
+**Oracle Forms Syntax :**
 ```sql
  SET_ITEM_PROPERTY('BLOCK1.ITEM1', insert_allowed, property_false)
 ```
 
-QAFE Built-In Syntax in Procedure :
+**QAFE Built-In Syntax in Procedure :**
 ```sql
-QAFE_BUILT_IN.SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.property_false);
+  QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.property_false);
 ```
 
-QAFE Built-In Executed:
+**QAFE Built-In Executed:**
 
 ```xml
-<set-property property="editable" value="false">
-  <component ref="FORM1$P_BLOCK1$ITEM1"/>
-</set-property>
+  <set-property property="editable" value="false">
+    <component ref="FORM1$BLOCK1$ITEM1"/>
+  </set-property>
+  FORM1$BLOCK1$ITEM1 is the component id generated for ITEM1
 ```
 ## Oracle Forms Built-In : SET_ITEM_PROPERTY
 
-Oracle Forms Syntax :
+**Oracle Forms Syntax :**
 ```sql
  SET_ITEM_PROPERTY('BLOCK1.ITEM1', update_allowed, property_false)
 ```
 
-QAFE Built-In Syntax in Procedure :
+**QAFE Built-In Syntax in Procedure :**
 ```sql
-QAFE_BUILT_IN.SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.property_false);
+  QAFE_BUILT_IN.SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.property_false);
 ```
 
-QAFE Built-In Executed:
+**QAFE Built-In Executed:**
 
 ```xml
 <set-property property="editable" value="false">
@@ -110,17 +114,17 @@ QAFE Built-In Executed:
 
 ## Oracle Forms Built-In : SET_ITEM_PROPERTY
 
-Oracle Forms Syntax :
+**Oracle Forms Syntax :**
 ```sql
  SET_ITEM_PROPERTY('BLOCK1.ITEM1', delete_allowed, property_false)
 ```
 
-QAFE Built-In Syntax in Procedure :
+**QAFE Built-In Syntax in Procedure :**
 ```sql
 QAFE_BUILT_IN.SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.property_false);
 ```
 
-QAFE Built-In Executed:
+**QAFE Built-In Executed:**
 
 ```xml
 <set-property property="editable" value="false">
@@ -130,17 +134,17 @@ QAFE Built-In Executed:
 
 ## Oracle Forms Built-In : HIDE_VIEW
 
-Oracle Forms Syntax :
+**Oracle Forms Syntax :**
 ```sql
  HIDE_VIEW('CANVAS1')
 ```
 
-QAFE Built-In Syntax in Procedure :
+**QAFE Built-In Syntax in Procedure :**
 ```sql
 QAFE_BUILT_IN.HIDE_VIEW('CANVAS1');
 ```
 
-QAFE Built-In Executed:
+**QAFE Built-In Executed:**
 
 ```xml
 <set-property property="visible" value="false">
@@ -152,17 +156,17 @@ Panel with name CANVAS1 is made invisible
 
 ## Oracle Forms Built-In : SHOW_VIEW
 
-Oracle Forms Syntax :
+**Oracle Forms Syntax :**
 ```sql
  SHOW_VIEW('CANVAS1')
 ```
 
-QAFE Built-In Syntax in Procedure :
+**QAFE Built-In Syntax in Procedure :**
 ```sql
 QAFE_BUILT_IN.SHOW_VIEW('CANVAS1');
 ```
 
-QAFE Built-In Executed:
+**QAFE Built-In Executed:**
 
 ```xml
 <set-property property="visible" value="true">
@@ -174,19 +178,19 @@ Panel with name CANVAS1 is made visible
 
 ## Oracle Forms Built-In : GO_BLOCK
 
-Oracle Forms Syntax :
+**Oracle Forms Syntax :**
 ```sql
  GO_BLOCK('BLOCK1')
 ```
 
-QAFE Built-In Syntax in Procedure :
+**QAFE Built-In Syntax in Procedure :**
 ```xml
 QAFE_BUILT_IN.GO_BLOCK('BLOCK1');
 ```
 
-QAFE Built-In Executed:
+**QAFE Built-In Executed:**
 
-No QAFE Built-ins executed.
+  No QAFE Built-Ins executed.
 
 QAFE_BUILTIN script will store this block name in a variable CURRENT_BLOCK_NAME in PACKAGE BODY of QAFE_BUILT_IN.
 
@@ -203,7 +207,7 @@ This value will be used when executing clear_block built-in or other built-ins
  Clear_Block(NO_COMMIT);
 ```
 
-**QAFE Built-In Syntax in Procedure : **
+**QAFE Built-In Syntax in Procedure :**
 ```xml
 QAFE_BUILT_IN.GO_BLOCK('BLOCK1');
 
@@ -230,7 +234,7 @@ Note: BLOCK1$ALL is the group-name generated for all the items in a Block.
  Clear_List('list_name');
 ```
 
-**QAFE Built-In Syntax in Procedure : **
+**QAFE Built-In Syntax in Procedure :**
 ```xml
 QAFE_BUILT_IN.Clear_List('list_name');
 ```
@@ -250,9 +254,9 @@ Multiple components can contain the same name, so it is better to change the ref
  GO_ITEM('BLOCK1.ITEM1');
 ```
 
-**QAFE Built-In Syntax in Procedure : **
+**QAFE Built-In Syntax in Procedure :**
 ```xml
-QAFE_BUILT_IN.GO_ITEM('BLOCK1_ITEM1');
+QAFE_BUILT_IN.GO_ITEM('BLOCK1.ITEM1');
 ```
 
 **QAFE Built-In Executed:**
@@ -272,7 +276,7 @@ This value will be used for clear_item built-in or other built-ins executed afte
  CLEAR_ITEM;
 ```
 
-**QAFE Built-In Syntax in Procedure : **
+**QAFE Built-In Syntax in Procedure :**
 ```xml
 QAFE_BUILT_IN.CLEAR_ITEM;
 ```
@@ -339,7 +343,7 @@ QAFE Built-Ins ```<set-property>, <show-panel>, <close-panel> ```can be used to 
 FORM1_WINDOW1_main_CANVAS1 and FORM1_WINDOW1_main_CANVAS2 are the Panel-Definition Id corresponding to CANVAS1 and CANVAS2.
 
 ### Functionality: Block Management ###
-**Scenario: Populate the Block with new set of data **
+**Scenario: Populate the Block with new set of data**
 
 Form triggers contains code to populate the block.
 Oracle Form's get_block_property built-in is used to get different properties of block
@@ -498,7 +502,7 @@ Oracle Form's create_parameter_list,add_parameter are used to create the paramet
 
 **Conversion to QAFE:**
 QAFE converts all the PARAMETERS in Oracle forms to textfield components with group-name of all the PARAMETERS set as <formName>_PARAMETER. This can be found in the main Window of the form.
-```
+```xml
   <panel visible="false">
     <verticallayout>
       <textfield id="FORM2_PARAMETER_PARAM1" name="PARAM1" group-name="FORM2_PARAMETER">
@@ -558,7 +562,7 @@ QAFE Exception handling is done in a two step process.
 Using Intergation-Tier error tags and <error-hanlder> built-in define the error types.
 
 You can also use  exception="*" to catch all exceptions.
-```
+```xml
     <integration-tier>
     <services/>
     <adapters/>
@@ -590,7 +594,7 @@ You can also use  exception="*" to catch all exceptions.
 
 In QAFE Event the defined type of exceptions can be caught using <error-handler>. Body of the error-hanlder can use any QAFE built-ins to handle this exception.
 
-```
+```xml
   <event>
     <listeners>
       <listenergroup>
