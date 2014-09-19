@@ -1,27 +1,297 @@
-# Oracle Forms Builint-in Handling in QAFE#
+# Oracle Forms Built-in Handling in QAFE#
 
+This document refers to a FMBs with following properties.
+
+Form Name: FORM1 , Block Name : BLOCK1,BLOCK2 , Item Name : ITEM1, ITEM2, Window Name : WINDOW1, Canvas Name : CANVAS1
+
+Form Name: FORM2 , Block Name : BLOCK1 , Item Name : ITEM1, Window Name : WINDOW1, Canvas Name : CANVAS1
 
 ### Oracle Forms Built-Ins which can be used in Database Procedures ###
 
+After Conversion you will get a script file containing the trigger code in your FMB.
+
+This can be found in src/main/script/FORM1 folder of your QAFE Project with name MAIN_SCRIPT_Package_Script_FORM1.sql
+
+Apart from this a QAFE provides script file QAFE_BUILT_IN.sql and QAFE_BUILT_IN_BODY.sql which handles the Oracle Forms Built-Ins (src/main/script folder).
+
+MAIN_SCRIPT_Package_Script_FORM1 uses QAFE_BUILT_IN Package to handle some of the Oracle Forms Built-Ins.
+To Execute any built-In in your script file you have to prefix the built-in with QAFE_BUILT_IN.
+
+For Example your trigger code use SET_ITEM_PROPERTY('BLOCK1.ITEM1', visible, property_false);
+
+This will be converted in script file as,
+SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', visible, property_false);
+
+You have change this code as follows to execute this built-in,
+
+QAFE_BUILT_IN.SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUILT_IN.property_false);
+
+When this line get executed QAFE_BUILT_IN Package stores collect this in QAFE_BUILT_IN_LIST variable.
+
+QAFE_BUILT_IN_LIST is a return value for all procedures generated and QAFE Engine will execute the corresponding QAFE built-Ins in the front-end after the execution of this procedure.
 
 
-| Forms Built-in |Oracle Forms Syntax |QAFE Built-in Executed |Remarks |
+## Oracle Forms Built-In : SET_ITEM_PROPERTY
+
+Oracle Forms Syntax :
+```sql
+ SET_ITEM_PROPERTY('BLOCK1.ITEM1', visible, property_false);
+ ```
+
+QAFE Built-In Syntax in Procedure :
+```sql
+QAFE_BUILT_IN.SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUILT_IN.property_false);```
+
+QAFE Built-In Executed:
+
+```xml
+<set-property property="visible" value="false">
+  <component ref="FORM1$P_BLOCK1$ITEM1"/>
+</set-property>
+```
+
+## Oracle Forms Built-In : SET_ITEM_PROPERTY
+
+Oracle Forms Syntax :
+```sql
+ SET_ITEM_PROPERTY('BLOCK1.ITEM1', enabled, property_false)
+```
+
+QAFE Built-In Syntax in Procedure :
+```sql
+QAFE_BUILT_IN.SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', QAFE_BUILT_IN.enabled, QAFE_BUILT_IN.property_false);
+```
+
+QAFE Built-In Executed:
+
+```xml
+<set-property property="enabled" value="false">
+  <component ref="FORM1$P_BLOCK1$ITEM1"/>
+</set-property>
+```
+## Oracle Forms Built-In : SET_ITEM_PROPERTY
+
+Oracle Forms Syntax :
+```sql
+ SET_ITEM_PROPERTY('BLOCK1.ITEM1', insert_allowed, property_false)
+```
+
+QAFE Built-In Syntax in Procedure :
+```sql
+QAFE_BUILT_IN.SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.property_false);
+```
+
+QAFE Built-In Executed:
+
+```xml
+<set-property property="editable" value="false">
+  <component ref="FORM1$P_BLOCK1$ITEM1"/>
+</set-property>
+```
+## Oracle Forms Built-In : SET_ITEM_PROPERTY
+
+Oracle Forms Syntax :
+```sql
+ SET_ITEM_PROPERTY('BLOCK1.ITEM1', update_allowed, property_false)
+```
+
+QAFE Built-In Syntax in Procedure :
+```sql
+QAFE_BUILT_IN.SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.property_false);
+```
+
+QAFE Built-In Executed:
+
+```xml
+<set-property property="editable" value="false">
+  <component ref="FORM1$P_BLOCK1$ITEM1"/>
+</set-property>
+```
+
+## Oracle Forms Built-In : SET_ITEM_PROPERTY
+
+Oracle Forms Syntax :
+```sql
+ SET_ITEM_PROPERTY('BLOCK1.ITEM1', delete_allowed, property_false)
+```
+
+QAFE Built-In Syntax in Procedure :
+```sql
+QAFE_BUILT_IN.SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.property_false);
+```
+
+QAFE Built-In Executed:
+
+```xml
+<set-property property="editable" value="false">
+  <component ref="FORM1$P_BLOCK1$ITEM1"/>
+</set-property>
+```
+
+## Oracle Forms Built-In : HIDE_VIEW
+
+Oracle Forms Syntax :
+```sql
+ HIDE_VIEW('CANVAS1')
+```
+
+QAFE Built-In Syntax in Procedure :
+```sql
+QAFE_BUILT_IN.HIDE_VIEW('CANVAS1');
+```
+
+QAFE Built-In Executed:
+
+```xml
+<set-property property="visible" value="false">
+  <component ref="CANVAS1"/>
+</set-property>
+
+```
+Panel with name CANVAS1 is made invisible
+
+## Oracle Forms Built-In : SHOW_VIEW
+
+Oracle Forms Syntax :
+```sql
+ SHOW_VIEW('CANVAS1')
+```
+
+QAFE Built-In Syntax in Procedure :
+```sql
+QAFE_BUILT_IN.SHOW_VIEW('CANVAS1');
+```
+
+QAFE Built-In Executed:
+
+```xml
+<set-property property="visible" value="true">
+  <component ref="CANVAS1"/>
+</set-property>
+
+```
+Panel with name CANVAS1 is made visible
+
+## Oracle Forms Built-In : GO_BLOCK
+
+Oracle Forms Syntax :
+```sql
+ GO_BLOCK('BLOCK1')
+```
+
+QAFE Built-In Syntax in Procedure :
+```xml
+QAFE_BUILT_IN.GO_BLOCK('BLOCK1');
+```
+
+QAFE Built-In Executed:
+
+No QAFE Built-ins executed.
+
+QAFE_BUILTIN script will store this block name in a variable CURRENT_BLOCK_NAME in PACKAGE BODY of QAFE_BUILT_IN.
+
+This value will be used when executing clear_block built-in or other built-ins
+
+
+## Oracle Forms Built-In : CLEAR_BLOCK
+
+**Oracle Forms Syntax :**
+```xml
+ GO_BLOCK('BLOCK1')
+ CLEAR_BLOCK;
+ Clear_Block(NO_VALIDATE);
+ Clear_Block(NO_COMMIT);
+```
+
+**QAFE Built-In Syntax in Procedure : **
+```xml
+QAFE_BUILT_IN.GO_BLOCK('BLOCK1');
+
+QAFE_BUILT_IN.CLEAR_BLOCK;
+QAFE_BUILT_IN.CLEAR_BLOCK(QAFE_BUILT_IN.NO_VALIDATE);
+QAFE_BUILT_IN.CLEAR_BLOCK(QAFE_BUILT_IN.NO_COMMIT);
+
+```
+
+**QAFE Built-In Executed:**
+
+```xml
+<clear ref="BLOCK1$ALL" />
+```
+
+Based on previous GO_BLOCK('BLOCK1'),  clear built-in will be executed for the group-name corresponding to block.
+
+Note: BLOCK1$ALL is the group-name generated for all the items in a Block.
+
+## Oracle Forms Built-In : CLEAR_LIST
+
+**Oracle Forms Syntax :**
+```xml
+ Clear_List('list_name');
+```
+
+**QAFE Built-In Syntax in Procedure : **
+```xml
+QAFE_BUILT_IN.Clear_List('list_name');
+```
+
+**QAFE Built-In Executed:**
+
+```xml
+<clear ref="list_name" />
+```
+QAFE component with name=list_name will be cleared.
+Multiple components can contain the same name, so it is better to change the ref to the component-id of the QAFE component.
+
+## Oracle Forms Built-In : GO_ITEM
+
+**Oracle Forms Syntax :**
+```xml
+ GO_ITEM('BLOCK1.ITEM1');
+```
+
+**QAFE Built-In Syntax in Procedure : **
+```xml
+QAFE_BUILT_IN.GO_ITEM('BLOCK1_ITEM1');
+```
+
+**QAFE Built-In Executed:**
+
+```xml
+<focus ref="BLOCK1$ITEM1" />
+```
+QAFE_BUILTIN script will store this block name in a variable CURRENT_ITEM in PACKAGE BODY of QAFE_BUILT_IN.
+
+This value will be used for clear_item built-in or other built-ins executed after this.
+
+## Oracle Forms Built-In : CLEAR_ITEM
+
+**Oracle Forms Syntax :**
+```xml
+ GO_ITEM('BLOCK1.ITEM1');
+ CLEAR_ITEM;
+```
+
+**QAFE Built-In Syntax in Procedure : **
+```xml
+QAFE_BUILT_IN.CLEAR_ITEM;
+```
+
+**QAFE Built-In Executed:**
+
+```xml
+  <clear ref="BLOCK1$ITEM1" />
+  BLOCK1$ITEM1 is the component-id generated for ITEM1.
+```
+
+### Oracle Forms Built-Ins handling in QAFE ###
+
+
+
+| Forms Built-Ins |QAFE Built-Ins | References |
 |----------|-----------------|---------------------|---------------|---------|
-|SET_ITEM_PROPERTY | SET_ITEM_PROPERTY('block-name.item-name', visible, property_false); |```<set-property property="visible" value="false">```| Property set to Component with Id format block-name$item-name|
-|SET_ITEM_PROPERTY | SET_ITEM_PROPERTY('block-name.item-name', enabled, property_false); |```<set-property property="enabled" value="false">```| |
-|SET_ITEM_PROPERTY | SET_ITEM_PROPERTY('block-name.item-name', insert_allowed, property_false); |```<set-property property="editable"  value="false">```| |
-|SET_ITEM_PROPERTY | SET_ITEM_PROPERTY('block-name.item-name', update_allowed, property_true); |```<set-property property="editable"  value="false">```| |
-|SET_ITEM_PROPERTY | SET_ITEM_PROPERTY('block-name.item-name', delete_allowed, property_true); |```<set-property property="editable"  value="false">```| |
-|HIDE_VIEW | HIDE_VIEW('canvas-name'); |```<set-property property="visible"  value="false">```| Panel with name canvas-name is made invisible |
-|HIDE_VIEW | SHOW_VIEW('canvas-name'); |```<set-property property="visible"  value="true">```| Panel with name canvas-name is made visible |
-|GO_BLOCK | GO_BLOCK('block-name'); |No QAFE Built-ins executed| QAFE_BUILTIN script will store this block name in a variable CURRENT_BLOCK_NAME to be used with clear_block built-in or other built-ins |
-|CLEAR_BLOCK | CLEAR_BLOCK; |```<clear ref="blockname$ALL" />```| Based on previously stored CURRENT_BLOCK_NAME clear built-in executed for the group-name corresponding to block |
-|CLEAR_BLOCK | Clear_Block(NO_VALIDATE); |```<clear ref="blockname$ALL" />```| Based on previously stored CURRENT_BLOCK_NAME clear built-in executed for the group-name corresponding to block |
-|CLEAR_BLOCK | Clear_Block(NO_COMMIT); |```<clear ref="blockname$ALL" />```| Based on previously stored CURRENT_BLOCK_NAME, clear built-in executed for the group-name corresponding to block |
-|CLEAR_LIST | Clear_List('list_name'); |```<clear ref="list_name" />```| If there is more than one item with same name in the window you should change the built-in call to use the component-id. |
-|GO_ITEM | GO_ITEM('blockname.itemname'); |```<focus ref="blockname$itemname" />```|QAFE_BUILTIN script will store this block name in a variable CURRENT_ITEM to be used with clear_item built-in or other built-ins |
-|CLEAR_ITEM | CLEAR_ITEM; |```<clear ref="blockname$itemname" />```|Based on previously stored CURRENT_ITEM, clear built-in executed for the current item in focus|
-|SET_RADIO_BUTTON_PROPERTY | SET_RADIO_BUTTON_PROPERTY('BL_CONTROL.THRESHOLDS', 'IGNORE', enabled, property_false); |```<set-property property="enabled"  value="false" ../>```|component reference formed for qafe radio item is BL_CONTROL$THRESHOLDS$IGNORE|
+|SET_ITEM_PROPERTY | ```<set-property>``` | [Sample code](#set_item_property) |
+|HIDE_VIEW | ```<set-property>``` | [Functionality: Canvas Management][] |
 
 
 ##Converting Oracle Form Triggers to QAFE ##
@@ -34,23 +304,23 @@ Oracle Form's set_view_property built-in is used to set visibility and positioni
 Oracle Form's show_view, hide_view built-ins are used to show/hide a canvas.
 
 **Sample Code:**
-```SQL
-PROCEDURE CGLY$RAISE_CANVAS(
+```sql
+PROCEDURE RAISE_CANVAS(
    P_CANVAS IN VARCHAR2) IS  /* Current canvas */
 /* Raise the current canvas, plus any dependent canvases to the top */
 BEGIN
   set_view_property(P_CANVAS, VISIBLE, PROPERTY_ON);
-  IF ( P_CANVAS = 'CG$PAGE_1') THEN
-  	set_view_property('TAB_TA002', VISIBLE, PROPERTY_ON);
-    set_view_property('CG$STACKED_FOOTER_1', DISPLAY_POSITION, 0, 4.999);
-    set_view_property('CG$STACKED_FOOTER_1', VISIBLE, PROPERTY_ON);
+  IF ( P_CANVAS = 'CANVAS1') THEN
+    set_view_property('CANVAS1', VISIBLE, PROPERTY_ON);
+    set_view_property('CANVAS1', DISPLAY_POSITION, 0, 4.999);
+    set_view_property('CANVAS2', VISIBLE, PROPERTY_OFF);
   END IF;
 END;
 ```
 
-```SQL
-hide_VIEW('canvas-one');
-SHOW_VIEW('canvas-two');
+```sql
+  HIDE_VIEW('CANVAS1');
+  SHOW_VIEW('CANVAS2');
 ```
 
 **Conversion to QAFE:**
@@ -58,14 +328,16 @@ SHOW_VIEW('canvas-two');
 Even though this code will be generated in script file, better place for handling client side properties is QAFE Events.
 As part of conversion Canvas objects are converted as QAFE Panel or Panel-Definition.
 
-QAFE Builints ```<set-property>, <show-panel>, <close-panel> ```can be used to convert this functionality.
+QAFE Built-Ins ```<set-property>, <show-panel>, <close-panel> ```can be used to convert this functionality.
 ```
     <set-property property="visible" value="false">
-        <component ref="panelDefId or panelId"/>
+        <component ref="FORM1_WINDOW1_main_CANVAS1"/>
     </set-property>
-    <show-panel ref="panel DefinitionId" />
-    <close-panel ref="panel DefinitionId" />
+    <show-panel ref="FORM1_WINDOW1_main_CANVAS1" />
+    <close-panel ref="FORM1_WINDOW1_main_CANVAS1" />
 ```
+FORM1_WINDOW1_main_CANVAS1 and FORM1_WINDOW1_main_CANVAS2 are the Panel-Definition Id corresponding to CANVAS1 and CANVAS2.
+
 ### Functionality: Block Management ###
 **Scenario: Populate the Block with new set of data **
 
@@ -85,12 +357,12 @@ END;
 ```
 
 ```
-go_item('myblock.myitem');
+go_item('BLOCK1.ITEM1');
 execute_query;
 ```
 
 ```
-go_block('myblock');
+go_block('BLOCK1');
 execute_query;
 ```
 
@@ -102,41 +374,41 @@ As part of conversion based on the block Query Data Source, SQL statements are c
 Also corresponding business-actions are generated to invoke these statements.
 Items in block are converted to QAFE components with group-name of all items in that block.
 
-QAFE Built-ins ```<business-action ref=..>, <set group-name ..>, <set component-id ..> ```can be used to convert this functionality.
-```
-    <business-action ref="MYFORM_MYBLOCK_SELECT_BASETYPE">
-      <out name="MYFORM_MYBLOCK_SELECT_BASETYPEOut" ref="MYFORM_MYBLOCK_SELECT_BASETYPEOut"/>
+QAFE Built-ins ```<business-action>, <set>```can be used to convert this functionality.
+```xml
+    <business-action ref="FORM1_BLOCK1_SELECT_BASETYPE">
+      <out name="FORM1_BLOCK1_SELECT_BASETYPEOut" ref="FORM1_BLOCK1_SELECT_BASETYPEOut"/>
     </business-action>
 
     For single record block use group-name to set result value to user components
-    <set group-name="MYFORM_MYBLOCK" ref="MYFORM_MYBLOCK_SELECT_BASETYPEOut"/>
+    <set group-name="FORM1_BLOCK1" ref="FORM1_BLOCK1_SELECT_BASETYPEOut"/>
 
     For multi record block use the corresponding component id of datagrid to set result value to user components
-    <set component-id="MYFORM_MYBLOCK_ID" ref="MYFORM_MYBLOCK_SELECT_BASETYPEOut"/>
+    <set component-id="FORM1_BLOCK1_ID" ref="FORM1_BLOCK1_SELECT_BASETYPEOut"/>
 ```
 
-
+<a name="set_item_property"></a>
 ### Functionality: Item Management ###
-**Scenario: Change the Visibility / Enabled property of items **
+**Scenario: Change the Visibility / Enabled property of items**
 
 Form triggers contains code to dynamically change the visible/enabled properties of items.
 Oracle Form's SET_ITEM_PROPERTY built-in is used to set these properties.
 
 **Sample Code:**
 ```SQL
-  SET_ITEM_PROPERTY('blobkName.item1Name',VISIBLE,PROPERTY_FALSE);
-  SET_ITEM_PROPERTY('blobkName.item2Name',',ENABLED,PROPERTY_FALSE);
+  SET_ITEM_PROPERTY('BLOCK1.ITEM1', VISIBLE,PROPERTY_FALSE);
+  SET_ITEM_PROPERTY('BLOCK1.ITEM2', ENABLED,PROPERTY_FALSE);
 ```
 
 **Conversion to QAFE:**
 
 QAFE Built-in ```<set-property> ```can be used to convert this functionality.
-```
+```xml
   <set-property property="visible" value="false">
-    <component ref="formName_blockName_item1Name"/> <!-- use corresponding component-id -->
+    <component ref="FORM1_BLOCK1_ITEM1"/> <!-- corresponding component-id -->
   </set-property>
-  <set-property property="enabled" value="false">
-    <component ref="formName_blockName_item2Name"/> <!-- use corresponding component-id -->
+  <set-property property="editable" value="false">
+    <component ref="FORM1_BLOCK1_ITEM2"/> <!-- corresponding component-id -->
   </set-property>
 ```
 
@@ -149,16 +421,16 @@ Oracle Form's SET_ITEM_PROPERTY built-in is used to set these properties.
 **Sample Code:**
 ```SQL
   IF (:GLOBAL.USER_NAME <> 'USER1') THEN
-    SET_ITEM_PROPERTY  ('blockName.item1',UPDATE_ALLOWED , PROPERTY_FALSE);
+    SET_ITEM_PROPERTY  ('BLOCK1.ITEM1',UPDATE_ALLOWED , PROPERTY_FALSE);
   ELSE
-    SET_ITEM_PROPERTY  ('blockName.item2',UPDATE_ALLOWED , PROPERTY_TRUE);
+    SET_ITEM_PROPERTY  ('BLOCK1.ITEM2',UPDATE_ALLOWED , PROPERTY_TRUE);
   END IF;
 ```
 
 ```SQL
-  SET_ITEM_INSTANCE_PROPERTY('TA002.F_STR_RPV', CURRENT_RECORD, INSERT_ALLOWED, PROPERTY_FALSE);
-  SET_ITEM_INSTANCE_PROPERTY('TA002.F_STR_RPV', CURRENT_RECORD, UPDATE_ALLOWED, PROPERTY_FALSE);
-  SET_ITEM_INSTANCE_PROPERTY('TA002.F_STR_RPV', CURRENT_RECORD, NAVIGABLE, PROPERTY_FALSE);
+  SET_ITEM_INSTANCE_PROPERTY('BLOCK1.ITEM1', CURRENT_RECORD, INSERT_ALLOWED, PROPERTY_FALSE);
+  SET_ITEM_INSTANCE_PROPERTY('BLOCK1.ITEM2', CURRENT_RECORD, UPDATE_ALLOWED, PROPERTY_FALSE);
+  SET_ITEM_INSTANCE_PROPERTY('BLOCK1.ITEM3', CURRENT_RECORD, NAVIGABLE, PROPERTY_FALSE);
 ```
 
 **Conversion to QAFE:**
@@ -166,8 +438,8 @@ Oracle Form's SET_ITEM_PROPERTY built-in is used to set these properties.
 There is no attribute same as insert-allowed or update-allowed in QAFE.
 We can enable/disable/change visibility of the corresponding corresponding components to convert this code based on conditions.
 
-QAFE Built-ins ```<if>, <set-property ..> ```can be used to convert this functionality.
-```
+QAFE Built-ins ```<if>, <set-property> ```can be used to convert this functionality.
+```xml
     <if>
       <expression expr="${USER_NAME} != 'USER1'">
         <placeholder name="USER_NAME" ref="USER_NAME" src="global"/>
@@ -175,27 +447,28 @@ QAFE Built-ins ```<if>, <set-property ..> ```can be used to convert this functio
         <results>
           <result value="true">
             <set-property property="enabled" value="false">
-              <component ref="formName_blockName_item1"/> <!-- use corresponding component-id -->
+              <component ref="FORM1_BLOCK1_ITEM1"/> <!-- use corresponding component-id -->
             </set-property>
           </result>
           <result value="false">
             <set-property property="enabled" value="false">
-              <component ref="formName_blockName_item1"/> <!-- use corresponding component-id -->
+              <component ref="FORM1_BLOCK1_ITEM2"/> <!-- use corresponding component-id -->
             </set-property>
           </result>
         </results>
     </if>
 ```
 
-If the item is in a multi-record block we can use the $SELECTED_INDEX property to change the component property of the current record.
+If the item is in a multi-record block we can use the $SELECTED_INDEX QAFE keyword to change the component property of the current record.
+
+```xml
+  <set-property property="enabled" value="false">
+    <component ref="FORM1_BLOCK1_ID[$SELECTED_INDEX].FORM1_BLOCK1_ITEM1"/>
+  </set-property>
+  FORM1_BLOCK1_ID is the id of the Data-grid equivalent to the block.
+  FORM1_BLOCK1_ITEM1 is the id of the column in this Data-grid representing the item1 component
 
 ```
-  <set-property property="enabled" value="false">
-    <component ref="dataGridId[$SELECTED_INDEX].columnIdofItem1"/>
-  </set-property>
-```
-dataGridId is the id of the Datagrid equivalant to the block
-columnId is the id of the column in this Datagrid representing the item1 component
 
 
 ### Functionality: Opening a form using built-ins ###
@@ -216,15 +489,15 @@ Oracle Form's create_parameter_list,add_parameter are used to create the paramet
       destroy_parameter_list(pl_id);
     END IF;
     pl_id := create_parameter_list(pl_name);
-    add_parameter(pl_id, 'PARAM1', TEXT_PARAMETER, :blockName.itemName1);
-    add_parameter(pl_id, 'PARAM2', TEXT_PARAMETER, :blockName.itemName2);
+    add_parameter(pl_id, 'PARAM1', TEXT_PARAMETER, :BLOCK1.ITEM1);
+    add_parameter(pl_id, 'PARAM2', TEXT_PARAMETER, :BLOCK1.ITEM2);
     call_form('FORM2', no_hide, no_replace, no_query_only, pl_id);
   END;
 
 ```
 
 **Conversion to QAFE:**
-QAFE converts all the PARAMETERS in Oracle forms to textfield conponents with groupname of all the PARAMETERS set as <formName>_PARAMETER. This can be found in the main Window of the form.
+QAFE converts all the PARAMETERS in Oracle forms to textfield components with group-name of all the PARAMETERS set as <formName>_PARAMETER. This can be found in the main Window of the form.
 ```
   <panel visible="false">
     <verticallayout>
@@ -238,12 +511,16 @@ QAFE converts all the PARAMETERS in Oracle forms to textfield conponents with gr
 ```
 After opening the new form using <show-panel> we can set the PARAMETERS values using <set component-id ..>
 
-```
-  <show-panel src="panelDefinitionIdCorrespondingToFORM2" position="center" modal="true" auto-hide="false" />
+```xml
+  <show-panel src="FORM2_WINDOW1_main_CANVAS1" position="center" modal="true" auto-hide="false" />
   <set component-id="FORM2_PARAMETER_PARAM1" value="PARAM1 Static Value" />
-  <set component-id="FORM2_PARAMETER_PARAM2" ref="componentIdWithParam2Vale" src="component" />
+  <set component-id="FORM2_PARAMETER_PARAM2" ref="FORM1_BLOCK1_ITEM1" src="component" />
+
+  FORM2_WINDOW1_main_CANVAS1 is the Panel-Definition Id corresponding to main canvas of FORM2.
+  FORM1_BLOCK1_ITEM1 is the id of a component in FORM1.
 
 ```
+
 
 Now PARAM1 and PARAM2 are available to use in FORM2. Any QAFE event can use these values.
 
