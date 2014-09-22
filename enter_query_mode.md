@@ -8,6 +8,8 @@ Basic knowledge of QAFE is needed to understand this tutorial.
 Feel free to use any type of database. For this example we assume an
 Oracle database.
 
+You can find the database definition in [formname]-resource-tier.qaml, or HRFORM1-resource-tier.qaml
+
 Form details:
 
 Form name is "HRFORM1"
@@ -44,12 +46,7 @@ For the next section, we assume you have already converted an Oracle Forms
 application.
 
 ## After conversion ##
-For the remaining of the tutorial, we assume the following image is the result
-after a conversion.
-
-![Layout](https://raw.githubusercontent.com/qafedev/qafedev.github.io/master/assets/images/enter_query_mode/enter_query_mode_app_1.png)
-
-Here is a short overview of what you see in the image
+For our example, we assume the following:
 
 - A grid, filled with data based on the departments table
 - A grid, filled with data based on the employees table
@@ -61,7 +58,10 @@ This works out of the box, because the conversion generates these queries based
 on relations defined in a block.
 
 Here is a short example of what the converted query will look like in case of
-our example:
+our example.
+
+The queries can be found in the [formname]-statements.xml.
+
 ```xml
   <select id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
 		<![CDATA[SELECT * FROM DEPARTMENTS]]>
@@ -76,9 +76,10 @@ Note that the generated id for the master is based on the format
 based on [formname]\_[blockname]\_SELECT\_DETAIL
 
 These translate to the following business-actions and their method definitions
-In the
+In the business-tier.
 
-business-tier
+The format of the generated business-tier file is [formname]-business-tier.qaml.
+
 ```xml
 	<business-action id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
 		<transaction managed="no" />
@@ -96,6 +97,9 @@ business-tier
 		</service>
 	</business-action>
 ```
+
+You can find the integration-tier in [formname]-integration-tier.qaml.
+
 In the integration-tier:
 ```xml
 	<method id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE"
