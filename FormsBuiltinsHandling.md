@@ -1,18 +1,25 @@
 # Oracle Forms Built-in Handling in QAFE#
+*This document refers to FMBs with following properties.*
 
-This document refers to FMBs with following properties.
+Form Name: FORM1  
+Block Names : BLOCK1, BLOCK2  
+Item Names : ITEM1,ITEM2  
+Window Names : WINDOW1  
+Canvas Names : CANVAS1, CANVAS2
 
-Form Name: FORM1 , Block Names : BLOCK1,BLOCK2 , Item Names : ITEM1, ITEM2, Window Names : WINDOW1, Canvas Names : CANVAS1, CANVAS2
-
-Form Name: FORM2 , Block Names : BLOCK1,BLOCK2 , Item Names : ITEM1, ITEM2, Window Names : WINDOW1, Canvas Names : CANVAS1, CANVAS2
+Form Name: FORM2  
+Block Names : BLOCK1, BLOCK2  
+Item Names : ITEM1, ITEM2  
+Window Names : WINDOW1  
+Canvas Names : CANVAS1, CANVAS2
 
 ### Oracle Forms Built-Ins which can be used in Database Procedures ###
 
-After Conversion you will get a script file containing the trigger code in your FMB.
+After Conversion (FORM1.fmb) you will get a script file containing the trigger code in your FMB.
 
 This can be found in src/main/script/FORM1 folder of your QAFE Project with name MAIN_SCRIPT_Package_Script_FORM1.sql
 
-Apart from this a QAFE provides script file QAFE_BUILT_IN.sql and QAFE_BUILT_IN_BODY.sql which handles the Oracle Forms Built-Ins (src/main/script folder).
+Apart from this QAFE provides script file QAFE_BUILT_IN.sql and QAFE_BUILT_IN_BODY.sql which handles the Oracle Forms Built-Ins (src/main/script folder).
 
 MAIN_SCRIPT_Package_Script_FORM1 uses QAFE_BUILT_IN Package to handle some of the Oracle Forms Built-Ins.
 To Execute any built-In in your script file you have to prefix the built-in with QAFE_BUILT_IN.
@@ -31,7 +38,7 @@ When this line get executed QAFE_BUILT_IN Package collect this in QAFE_BUILT_IN_
 QAFE_BUILT_IN_LIST is a return value for all procedures generated and QAFE Engine will execute the corresponding QAFE built-Ins in the front-end after the execution of this procedure.
 
 
-## Oracle Forms Built-In : SET_ITEM_PROPERTY
+## Oracle Forms Built-In : SET_ITEM_PROPERTY - visible property
 
 **Oracle Forms Syntax :**
 ```sql
@@ -52,7 +59,7 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
   FORM1_BLOCK1_ITEM1 is the component id generated for ITEM1
 ```
 
-## Oracle Forms Built-In : SET_ITEM_PROPERTY
+## Oracle Forms Built-In : SET_ITEM_PROPERTY - enabled property
 
 **Oracle Forms Syntax :**
 ```sql
@@ -73,7 +80,7 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
   </set-property>
   FORM1_BLOCK1_ITEM1 is the component id generated for ITEM1
 ```
-## Oracle Forms Built-In : SET_ITEM_PROPERTY
+## Oracle Forms Built-In : SET_ITEM_PROPERTY - insert_allowed property
 
 **Oracle Forms Syntax :**
 ```sql
@@ -93,7 +100,7 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
   </set-property>
   FORM1_BLOCK1_ITEM1 is the component id generated for ITEM1
 ```
-## Oracle Forms Built-In : SET_ITEM_PROPERTY
+## Oracle Forms Built-In : SET_ITEM_PROPERTY - update_allowed property
 
 **Oracle Forms Syntax :**
 ```sql
@@ -113,7 +120,7 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
 </set-property>
 ```
 
-## Oracle Forms Built-In : SET_ITEM_PROPERTY
+## Oracle Forms Built-In : SET_ITEM_PROPERTY - delete_allowed property
 
 **Oracle Forms Syntax :**
 ```sql
@@ -336,7 +343,7 @@ As part of conversion Canvas objects are converted as QAFE Panel or Panel-Defini
 
 QAFE Built-Ins ```<set-property>, <show-panel>, <close-panel> ```can be used to convert this functionality.
 ```
-    <set-property property="visible" value="false">
+    <set-property property="visible" value="true">
         <component ref="FORM1_WINDOW1_main_CANVAS1"/>
     </set-property>
     <show-panel ref="FORM1_WINDOW1_main_CANVAS1" />
@@ -457,7 +464,7 @@ QAFE Built-ins ```<if>, <set-property> ```can be used to convert this functional
             </set-property>
           </result>
           <result value="false">
-            <set-property property="enabled" value="false">
+            <set-property property="enabled" value="true">
               <component ref="FORM1_BLOCK1_ITEM2"/> <!-- use corresponding component-id -->
             </set-property>
           </result>
