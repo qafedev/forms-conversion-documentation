@@ -2,9 +2,9 @@
 
 This document refers to FMBs with following properties.
 
-Form Name: FORM1 , Block Name : BLOCK1,BLOCK2 , Item Name : ITEM1, ITEM2, Window Name : WINDOW1, Canvas Name : CANVAS1
+Form Name: FORM1 , Block Names : BLOCK1,BLOCK2 , Item Names : ITEM1, ITEM2, Window Names : WINDOW1, Canvas Names : CANVAS1, CANVAS2
 
-Form Name: FORM2 , Block Name : BLOCK1 , Item Name : ITEM1, Window Name : WINDOW1, Canvas Name : CANVAS1
+Form Name: FORM2 , Block Names : BLOCK1,BLOCK2 , Item Names : ITEM1, ITEM2, Window Names : WINDOW1, Canvas Names : CANVAS1, CANVAS2
 
 ### Oracle Forms Built-Ins which can be used in Database Procedures ###
 
@@ -20,13 +20,13 @@ To Execute any built-In in your script file you have to prefix the built-in with
 For Example your trigger code use SET_ITEM_PROPERTY('BLOCK1.ITEM1', visible, property_false);
 
 This will be converted in script file as,
-SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', visible, property_false);
+SET_ITEM_PROPERTY('BLOCK1.ITEM1', visible, property_false);
 
-You have change this code as follows to execute this built-in,
+You have to change this code as below to execute this built-in,
 
-QAFE_BUILT_IN.SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUILT_IN.property_false);
+QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUILT_IN.property_false);
 
-When this line get executed QAFE_BUILT_IN Package stores collect this in QAFE_BUILT_IN_LIST variable.
+When this line get executed QAFE_BUILT_IN Package collect this in QAFE_BUILT_IN_LIST variable.
 
 QAFE_BUILT_IN_LIST is a return value for all procedures generated and QAFE Engine will execute the corresponding QAFE built-Ins in the front-end after the execution of this procedure.
 
@@ -47,9 +47,9 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
 
 ```xml
   <set-property property="visible" value="false">
-    <component ref="FORM1$BLOCK1$ITEM1"/>
+    <component ref="FORM1_BLOCK1_ITEM1"/>
   </set-property>
-  FORM1$BLOCK1$ITEM1 is the component id generated for ITEM1
+  FORM1_BLOCK1_ITEM1 is the component id generated for ITEM1
 ```
 
 ## Oracle Forms Built-In : SET_ITEM_PROPERTY
@@ -62,15 +62,16 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
 **QAFE Built-In Syntax in Procedure :**
 ```sql
   QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.enabled, QAFE_BUILT_IN.property_false);
-  FORM1$BLOCK1$ITEM1 is the component id generated for ITEM1
+
 ```
 
 **QAFE Built-In Executed:**
 
 ```xml
-<set-property property="enabled" value="false">
-  <component ref="FORM1$BLOCK1$ITEM1"/>
-</set-property>
+  <set-property property="enabled" value="false">
+    <component ref="FORM1_BLOCK1_ITEM1"/>
+  </set-property>
+  FORM1_BLOCK1_ITEM1 is the component id generated for ITEM1
 ```
 ## Oracle Forms Built-In : SET_ITEM_PROPERTY
 
@@ -88,9 +89,9 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
 
 ```xml
   <set-property property="editable" value="false">
-    <component ref="FORM1$BLOCK1$ITEM1"/>
+    <component ref="FORM1_BLOCK1_ITEM1"/>
   </set-property>
-  FORM1$BLOCK1$ITEM1 is the component id generated for ITEM1
+  FORM1_BLOCK1_ITEM1 is the component id generated for ITEM1
 ```
 ## Oracle Forms Built-In : SET_ITEM_PROPERTY
 
@@ -101,14 +102,14 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
 
 **QAFE Built-In Syntax in Procedure :**
 ```sql
-  QAFE_BUILT_IN.SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.property_false);
+  QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.property_false);
 ```
 
 **QAFE Built-In Executed:**
 
 ```xml
 <set-property property="editable" value="false">
-  <component ref="FORM1$P_BLOCK1$ITEM1"/>
+  <component ref="FORM1_P_BLOCK1_ITEM1"/>
 </set-property>
 ```
 
@@ -121,14 +122,14 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
 
 **QAFE Built-In Syntax in Procedure :**
 ```sql
-QAFE_BUILT_IN.SET_ITEM_PROPERTY('P_BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.property_false);
+QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.property_false);
 ```
 
 **QAFE Built-In Executed:**
 
 ```xml
 <set-property property="editable" value="false">
-  <component ref="FORM1$P_BLOCK1$ITEM1"/>
+  <component ref="FORM1_P_BLOCK1_ITEM1"/>
 </set-property>
 ```
 
@@ -220,12 +221,12 @@ QAFE_BUILT_IN.CLEAR_BLOCK(QAFE_BUILT_IN.NO_COMMIT);
 **QAFE Built-In Executed:**
 
 ```xml
-<clear ref="BLOCK1$ALL" />
+<clear ref="FORM1_BLOCK1_ALL" />
 ```
 
 Based on previous GO_BLOCK('BLOCK1'),  clear built-in will be executed for the group-name corresponding to block.
 
-Note: BLOCK1$ALL is the group-name generated for all the items in a Block.
+Note: FORM1_BLOCK1_ALL is the group-name generated for all the items in a Block.
 
 ## Oracle Forms Built-In : CLEAR_LIST
 
@@ -262,7 +263,7 @@ QAFE_BUILT_IN.GO_ITEM('BLOCK1.ITEM1');
 **QAFE Built-In Executed:**
 
 ```xml
-<focus ref="BLOCK1$ITEM1" />
+<focus ref="FORM1_BLOCK1_ITEM1" />
 ```
 QAFE_BUILTIN script will store this block name in a variable CURRENT_ITEM in PACKAGE BODY of QAFE_BUILT_IN.
 
@@ -278,14 +279,15 @@ This value will be used for clear_item built-in or other built-ins executed afte
 
 **QAFE Built-In Syntax in Procedure :**
 ```xml
+QAFE_BUILT_IN.GO_ITEM('BLOCK1.ITEM1');
 QAFE_BUILT_IN.CLEAR_ITEM;
 ```
 
 **QAFE Built-In Executed:**
 
 ```xml
-  <clear ref="BLOCK1$ITEM1" />
-  BLOCK1$ITEM1 is the component-id generated for ITEM1.
+  <clear ref="FORM1_BLOCK1_ITEM1" />
+  BLOCK1_ITEM1 is the component-id generated for ITEM1.
 ```
 
 ### Oracle Forms Built-Ins handling in QAFE ###
@@ -411,7 +413,7 @@ QAFE Built-in ```<set-property> ```can be used to convert this functionality.
   <set-property property="visible" value="false">
     <component ref="FORM1_BLOCK1_ITEM1"/> <!-- corresponding component-id -->
   </set-property>
-  <set-property property="editable" value="false">
+  <set-property property="enabled" value="false">
     <component ref="FORM1_BLOCK1_ITEM2"/> <!-- corresponding component-id -->
   </set-property>
 ```
