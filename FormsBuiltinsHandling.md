@@ -38,7 +38,7 @@ When this line get executed QAFE_BUILT_IN Package collect this in QAFE_BUILT_IN_
 QAFE_BUILT_IN_LIST is a return value for all procedures generated and QAFE Engine will execute the corresponding QAFE built-Ins in the front-end after the execution of this procedure.
 
 
-## Oracle Forms Built-In : SET_ITEM_PROPERTY - visible property
+## Oracle Forms Built-In : SET_ITEM_PROPERTY - visible
 
 **Oracle Forms Syntax :**
 ```sql
@@ -59,7 +59,7 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
   FORM1_BLOCK1_ITEM1 is the component id generated for ITEM1
 ```
 
-## Oracle Forms Built-In : SET_ITEM_PROPERTY - enabled property
+## Oracle Forms Built-In : SET_ITEM_PROPERTY - enabled
 
 **Oracle Forms Syntax :**
 ```sql
@@ -80,7 +80,7 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
   </set-property>
   FORM1_BLOCK1_ITEM1 is the component id generated for ITEM1
 ```
-## Oracle Forms Built-In : SET_ITEM_PROPERTY - insert_allowed property
+## Oracle Forms Built-In : SET_ITEM_PROPERTY - insert_allowed
 
 **Oracle Forms Syntax :**
 ```sql
@@ -100,7 +100,7 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
   </set-property>
   FORM1_BLOCK1_ITEM1 is the component id generated for ITEM1
 ```
-## Oracle Forms Built-In : SET_ITEM_PROPERTY - update_allowed property
+## Oracle Forms Built-In : SET_ITEM_PROPERTY - update_allowed
 
 **Oracle Forms Syntax :**
 ```sql
@@ -120,7 +120,7 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
 </set-property>
 ```
 
-## Oracle Forms Built-In : SET_ITEM_PROPERTY - delete_allowed property
+## Oracle Forms Built-In : SET_ITEM_PROPERTY - delete_allowed
 
 **Oracle Forms Syntax :**
 ```sql
