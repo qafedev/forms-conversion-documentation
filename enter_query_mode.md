@@ -1,138 +1,50 @@
 # QAFE Enter Query Mode How-to #
 
-This document will help you to properly implement **enter Query Mode** in QAFE.<br />
-Basic knowledge of QAFE is needed to understand this tutorial.
+enter-query-mode which is often used as a mechanism for searching for
+master-detail blocks within an Oracle Forms application.
 
-## Setting up a database ##
+The purpose of this document is to help you achieve a similar functionality within
+QAFE.
 
-Feel free to use any type of database. For this example we assume an
-Oracle database.
+A basic understanding of QAFE is assumed throughout this tutorial.
 
-You can find the database definition in [formname]-resource-tier.qaml, or HRFORM1-resource-tier.qaml
+## The Oracle Form ##
 
-Form details:
+The Oracle Form used for this example exists out of the following properties;
 
-Form name is "HRFORM1"
-2 blocks called "DEPARTMENTS" and "EMPLOYEES"
-1 relation between "DEPARTMENTS" and "EMPLOYEES" where one department and have
-many employees and one employee can be part of one department
+Form Name: HRFORM1  
+Block Names : DEPARTMENTS, EMPLOYEES  
+Relation : EMPLOYEES.DEPARTMENT_ID = DEPARTMENTS.DEPARTMENT_ID
 
-This example uses the following tables:
+Details for the tables corresponding to the blocks are as followed:
 ```sql
-	CREATE TABLE EMPLOYEES (
-		EMPLOYEE_ID NUMBER(6,0),
-		FIRST_NAME VARCHAR2(20 BYTE),
-		LAST_NAME VARCHAR2(25 BYTE),
-		EMAIL VARCHAR2(25 BYTE),
-		PHONE_NUMBER VARCHAR2(20 BYTE),
-		SALARY NUMBER(8,2),
-		DEPARTMENT_ID NUMBER(4,0)
-    );
+CREATE TABLE EMPLOYEES (
+	EMPLOYEE_ID NUMBER(6,0),
+	FIRST_NAME VARCHAR2(20 BYTE),
+	LAST_NAME VARCHAR2(25 BYTE),
+	EMAIL VARCHAR2(25 BYTE),
+	PHONE_NUMBER VARCHAR2(20 BYTE),
+	SALARY NUMBER(8,2),
+	DEPARTMENT_ID NUMBER(4,0)
+);
 
-	CREATE TABLE DEPARTMENTS (
-    	DEPARTMENT_ID NUMBER(4,0),
-    	DEPARTMENT_NAME VARCHAR2(30 BYTE),
-    );
-```
-In the employees table the following constraints are applied
-
-* employee_id in the employees table is a primary key
-* email in the employees table is unique
-* department_id in the employees table is a foreign key based on the primary key
-in departments
-* department_id in the departments table is a primary key
-
-For the next section, we assume you have already converted an Oracle Forms
-application.
-
-## After conversion ##
-For our example, we assume the following:
-
-- A grid, filled with data based on the departments table
-- A grid, filled with data based on the employees table
-- A master-detail relation between the two tables.
-
-To verify that the master-detail relation is working as expected,
-select a record on the master and the detail should get updated.
-This works out of the box, because the conversion generates these queries based
-on relations defined in a block.
-
-Here is a short example of what the converted query will look like in case of
-our example.
-
-The queries can be found in the [formname]-statements.xml.
-
-```xml
-  <select id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
-		<![CDATA[SELECT * FROM DEPARTMENTS]]>
-	</select>
-	<select id="HRFORM1_EMPLOYEES_SELECT_DETAIL"><![CDATA[
-		SELECT * FROM EMPLOYEES
-		WHERE  EMPLOYEES.DEPARTMENT_ID = :DEPARTMENT_ID
-	]]></select>
-```
-Note that the generated id for the master is based on the format
-[formname]\_[blockname]\_SELECT\_BASETYPE and the generated id for the detail is
-based on [formname]\_[blockname]\_SELECT\_DETAIL
-
-These translate to the following business-actions and their method definitions
-In the business-tier.
-
-The format of the generated business-tier file is [formname]-business-tier.qaml.
-
-```xml
-	<business-action id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
-		<transaction managed="no" />
-		<service ref="hrXE" method-ref="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
-			<out name="result" ref="result" />
-		</service>
-	</business-action>
-	<business-action id="HRFORM1_EMPLOYEES_SELECT_DETAIL">
-		<transaction managed="no" />
-		<service ref="hrXE" method-ref="HRFORM1_EMPLOYEES_SELECT_DETAIL">
-			<in name="DEPARTMENT_ID" ref="DEPARTMENT_ID" />
-			<in name="employeeIdSearch" ref="employeeIdSearch" />
-			<in name="employeeFirstNameSearch" ref="employeeFirstNameSearch" />
-			<out name="result" ref="result" />
-		</service>
-	</business-action>
+CREATE TABLE DEPARTMENTS (
+	DEPARTMENT_ID NUMBER(4,0),
+	DEPARTMENT_NAME VARCHAR2(30 BYTE),
+);
 ```
 
-You can find the integration-tier in [formname]-integration-tier.qaml.
+With the above knowledge in mind, we can convert out application to QAFE.
 
-In the integration-tier:
-```xml
-	<method id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE"
-				name="HRFORM1_DEPARTMENTS_SELECT_BASETYPE"
-				scrollable="true">
-			<out name="result" />
-	</method>
-	<method id="HRFORM1_EMPLOYEES_SELECT_DETAIL"
-				name="HRFORM1_EMPLOYEES_SELECT_DETAIL"
-				scrollable="true">
-			<in name="DEPARTMENT_ID" ref="DEPARTMENT_ID" />
-			<out name="result" />
-	</method>
-```
+## Result after QAFE Conversion ##
 
-We can see that the methods don't have any input for handling enter query mode.
-When we scan through the code, we can verify that neither search nor
-enter-query-mode is handled.
+After converting our form, both blocks are converted including their statements
+to populate the data.
 
-## Implementing enter-query-mode the QAFE way ##
-Implementing enter-query-mode in QAFE can be broken down in 3 parts;
+A UI similar to the example below will be generated.
 
-* Modifying the view
-* Add key-listener events
-* Add search criteria to the business-actions, methods and queries
-
-### Adding search support to the view ###
-
-In the presentation-tier we have 2 datagrids defined. These are identified
-by the following pattern: [formname]\_[blockname]\_ID
-
-In case of this example, it translate to the following two grid definitions:
-
+The blocks EMPLOYEES and DEPARTMENTS are converted to a datagrid with id's
+HRFORM1_EMPLOYEES_ID and HRFORM1_DDEPARTMENTS_ID respectively.
 ```xml
 <panel>
 	<verticallayout>
@@ -147,11 +59,81 @@ In case of this example, it translate to the following two grid definitions:
 </panel>
 ```
 
-To support search, we will need to add several components. We prefer to use
-a separate panel to hold the search fields. Based on keyboard input, we will
-show and hide this panel.
+After running the application, we can verify that the relation is converted correctly
+by clicking on the master (departments). This will result in employees being updated.
 
-Add a new panel above the datagrid definition for both master and detail;
+The converted statements will look like the following.
+
+```xml
+<select id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
+	<![CDATA[SELECT * FROM DEPARTMENTS]]>
+</select>
+<select id="HRFORM1_EMPLOYEES_SELECT_DETAIL"><![CDATA[
+	SELECT * FROM EMPLOYEES
+	WHERE  EMPLOYEES.DEPARTMENT_ID = :DEPARTMENT_ID
+]]></select>
+```
+Note that the generated id for the master is based on the format
+[formname]\_[blockname]\_SELECT\_BASETYPE and the generated id for the detail is
+based on [formname]\_[blockname]\_SELECT\_DETAIL
+
+These translate to the following business-actions and their method definitions
+In the business-tier.
+
+The format of the generated business-tier file is [formname]-business-tier.qaml.
+```xml
+<business-action id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
+	<transaction managed="no" />
+	<service ref="hrXE" method-ref="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
+		<out name="result" ref="result" />
+	</service>
+</business-action>
+<business-action id="HRFORM1_EMPLOYEES_SELECT_DETAIL">
+	<transaction managed="no" />
+	<service ref="hrXE" method-ref="HRFORM1_EMPLOYEES_SELECT_DETAIL">
+		<in name="DEPARTMENT_ID" ref="DEPARTMENT_ID" />
+		<in name="employeeIdSearch" ref="employeeIdSearch" />
+		<in name="employeeFirstNameSearch" ref="employeeFirstNameSearch" />
+		<out name="result" ref="result" />
+	</service>
+</business-action>
+```
+
+Their corresponding methods can be found in the integration-tier:
+
+The format for this file is [formname]-integration-tier.qaml.
+```xml
+<method id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE"
+			name="HRFORM1_DEPARTMENTS_SELECT_BASETYPE"
+			scrollable="true">
+	<out name="result" />
+</method>
+<method id="HRFORM1_EMPLOYEES_SELECT_DETAIL"
+			name="HRFORM1_EMPLOYEES_SELECT_DETAIL"
+			scrollable="true">
+	<in name="DEPARTMENT_ID" ref="DEPARTMENT_ID" />
+	<out name="result" />
+</method>
+```
+
+We can see that the methods don't have any input for handling enter query mode.
+When we scan through the code, we can verify that neither search nor
+enter-query-mode is handled.
+
+## Implementing enter-query-mode the QAFE way ##
+Implementing enter-query-mode in QAFE can be broken down in 3 parts;
+
+* Adding search support to the view
+* Modifying the queries
+* Sticking it all together: Events
+
+### Adding search support to the view ###
+
+To support enter-search-query like search, we will need to add several components.
+We prefer to use a separate panel to hold the search fields. Based on keyboard input,
+we will show and hide this panel.
+
+Add a new panel above the data grid definition for both master and detail;
 ```xml
 <panel>
 	<verticallayout>
@@ -190,16 +172,16 @@ After that, we can connect the 2 together using events as the glue.
 Adding search criteria to the queries is simple enough.
 
 ```sql
-	<select id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE"><![CDATA[
-		select * from DEPARTMENTS
-		WHERE upper(DEPARTMENT_NAME) like '%' || upper(:departmentNameSearch) || '%'
-		]]></select>
-	<select id="HRFORM1_EMPLOYEES_SELECT_DETAIL"><![CDATA[
-		select * from EMPLOYEES
-		where  EMPLOYEES.DEPARTMENT_ID = :DEPARTMENT_ID
-		and upper(EMPLOYEE_ID) like '%' || upper(:employeeIdSearch) || '%'
-		and upper(FIRST_NAME) like '%' || upper(:employeeFirstNameSearch) || '%'
-		]]></select>
+<select id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE"><![CDATA[
+	select * from DEPARTMENTS
+	WHERE upper(DEPARTMENT_NAME) like '%' || upper(:departmentNameSearch) || '%'
+	]]></select>
+<select id="HRFORM1_EMPLOYEES_SELECT_DETAIL"><![CDATA[
+	select * from EMPLOYEES
+	where  EMPLOYEES.DEPARTMENT_ID = :DEPARTMENT_ID
+	and upper(EMPLOYEE_ID) like '%' || upper(:employeeIdSearch) || '%'
+	and upper(FIRST_NAME) like '%' || upper(:employeeFirstNameSearch) || '%'
+	]]></select>
 ```
 
 As we can see, we added a LIKE clause to our statement, and we surround
@@ -209,39 +191,40 @@ case-insensitive search.
 We add a LIKE clause to all columns we want to search on.
 
 Now that we covered the queries, we need to update the methods and business-actions
+to add the new input parameters corresponding to the data entered in the search fields.
 
 business-tier
 ```xml
-	<business-action id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
-		<transaction managed="no" />
-		<service ref="hrXE" method-ref="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
-			<in name="departmentNameSearch" ref="departmentNameSearch" />
-			<out name="result" ref="result" />
-		</service>
-	</business-action>
-	<business-action id="HRFORM1_EMPLOYEES_SELECT_DETAIL">
-		<transaction managed="no" />
-		<service ref="hrXE" method-ref="HRFORM1_EMPLOYEES_SELECT_DETAIL">
-			<in name="DEPARTMENT_ID" ref="DEPARTMENT_ID" />
-			<in name="employeeIdSearch" ref="employeeIdSearch" />
-			<in name="employeeFirstNameSearch" ref="employeeFirstNameSearch" />
-			<out name="result" ref="result" />
-		</service>
-	</business-action>
+<business-action id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
+	<transaction managed="no" />
+	<service ref="hrXE" method-ref="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
+		<in name="departmentNameSearch" ref="departmentNameSearch" />
+		<out name="result" ref="result" />
+	</service>
+</business-action>
+<business-action id="HRFORM1_EMPLOYEES_SELECT_DETAIL">
+	<transaction managed="no" />
+	<service ref="hrXE" method-ref="HRFORM1_EMPLOYEES_SELECT_DETAIL">
+		<in name="DEPARTMENT_ID" ref="DEPARTMENT_ID" />
+		<in name="employeeIdSearch" ref="employeeIdSearch" />
+		<in name="employeeFirstNameSearch" ref="employeeFirstNameSearch" />
+		<out name="result" ref="result" />
+	</service>
+</business-action>
 ```
 
 intergration-tier
 ```xml
-	<method id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE" name="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
-		<in name="departmentNameSearch" ref="departmentNameSearch" />
-		<out name="result" />
-	</method>
-	<method id="HRFORM1_EMPLOYEES_SELECT_DETAIL" name="HRFORM1_EMPLOYEES_SELECT_DETAIL">
-		<in name="DEPARTMENT_ID" ref="DEPARTMENT_ID" />
-		<in name="employeeIdSearch" ref="employeeIdSearch" />
-		<in name="employeeFirstNameSearch" ref="employeeFirstNameSearch" />
-		<out name="result" />
-	</method>
+<method id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE" name="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
+	<in name="departmentNameSearch" ref="departmentNameSearch" />
+	<out name="result" />
+</method>
+<method id="HRFORM1_EMPLOYEES_SELECT_DETAIL" name="HRFORM1_EMPLOYEES_SELECT_DETAIL">
+	<in name="DEPARTMENT_ID" ref="DEPARTMENT_ID" />
+	<in name="employeeIdSearch" ref="employeeIdSearch" />
+	<in name="employeeFirstNameSearch" ref="employeeFirstNameSearch" />
+	<out name="result" />
+</method>
 ```
 
 This is all that needs to be done for supporting enter-query-mode based search
@@ -266,21 +249,21 @@ easier to deal with.
 Handling F7:
 
 ```xml
-	<event>
-		<listeners>
-			<listenergroup>
-				<component ref="HRFORM1_DEPARTMENTS_ID.DEPARTMENT_ID" />
-				<component ref="HRFORM1_DEPARTMENTS_ID.DEPARTMENT_NAME" />
-				<listener type="onkeydown">
-					<listener-parameter name="key" value="F7" />
-				</listener>
-			</listenergroup>
-		</listeners>
-		<set-property property="visible" value="true">
-			<component ref="departmentSearchPanel" />
-		</set-property>
-		<focus ref="departmentNameSearch" />
-	</event>
+<event>
+	<listeners>
+		<listenergroup>
+			<component ref="HRFORM1_DEPARTMENTS_ID.DEPARTMENT_ID" />
+			<component ref="HRFORM1_DEPARTMENTS_ID.DEPARTMENT_NAME" />
+			<listener type="onkeydown">
+				<listener-parameter name="key" value="F7" />
+			</listener>
+		</listenergroup>
+	</listeners>
+	<set-property property="visible" value="true">
+		<component ref="departmentSearchPanel" />
+	</set-property>
+	<focus ref="departmentNameSearch" />
+</event>
 ```
 
 In the component ref, the pattern is [datagrid column id].[database column]
@@ -294,62 +277,63 @@ The component in this case being a panel (and all its child components).
 
 We then set keyboard focus on the departmentNameSearch textbox.
 
+For the sake of re-usability, we moved the code that handles the actual
+loading of the departments and employees to separate events "loadDepartments"
+and "loadEmployees".
+
 Handling F8:
 
 ```xml
-	<event>
-		<listeners>
-			<listenergroup>
-				<component ref="HRFORM1_DEPARTMENTS_ID.DEPARTMENT_ID" />
-				<component ref="HRFORM1_DEPARTMENTS_ID.DEPARTMENT_NAME" />
-				<component ref="departmentNameSearch" />
-				<listener type="onkeydown">
-					<listener-parameter name="key" value="F8" />
-				</listener>
-			</listenergroup>
-			<listenergroup>
-				<component ref="departmentNameSearch" />
-				<listener type="onenter" />
-			</listenergroup>
-		</listeners>
-		<store name="departmentNameSearch" ref="departmentNameSearch"
-			src="component" />
-		<event ref="loadDepartments" />
-	</event>
+<event>
+	<listeners>
+		<listenergroup>
+			<component ref="HRFORM1_DEPARTMENTS_ID.DEPARTMENT_ID" />
+			<component ref="HRFORM1_DEPARTMENTS_ID.DEPARTMENT_NAME" />
+			<component ref="departmentNameSearch" />
+			<listener type="onkeydown">
+				<listener-parameter name="key" value="F8" />
+			</listener>
+		</listenergroup>
+		<listenergroup>
+			<component ref="departmentNameSearch" />
+			<listener type="onenter" />
+		</listenergroup>
+	</listeners>
+	<store name="departmentNameSearch" ref="departmentNameSearch"
+		src="component" />
+	<event ref="loadDepartments" />
+</event>
 ```
 
 The logic behind the listeners is the same, the main change is that we now listen
 to F8, and only when either the department_id or department_name column is
 selected, or departmentNameSearch component has focus.
 
-We then store the value of the departmentNameSearch component in a variable.
-
-And for the sake of reusability, we call a separate event that handles the actual
-loading of the departments.
+We then store the value of the departmentNameSearch component in a variable
 
 loadDepartments event:
 
 ```xml
-	<event id="loadDepartments">
-		<business-action ref="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
-			<in name="departmentNameSearch" ref="departmentNameSearch" />
-			<out name="selectDepartmentsResult" ref="result" />
-		</business-action>
-		<set component-id="HRFORM1_DEPARTMENTS_ID" ref="selectDepartmentsResult" />
+<event id="loadDepartments">
+	<business-action ref="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
+		<in name="departmentNameSearch" ref="departmentNameSearch" />
+		<out name="selectDepartmentsResult" ref="result" />
+	</business-action>
+	<set component-id="HRFORM1_DEPARTMENTS_ID" ref="selectDepartmentsResult" />
 
-		<store name="selectedDepartmentId" ref="selectDepartmentsResult[0].DEPARTMENT_ID" />
-		<store name="employeeIdSearch" ref="employeeIdSearch" src="component" />
-		<store name="employeeFirstNameSearch" ref="employeeFirstNameSearch"
-			src="component" />
-		<event ref="loadEmployees" />
-	</event>
+	<store name="selectedDepartmentId" ref="selectDepartmentsResult[0].DEPARTMENT_ID" />
+	<store name="employeeIdSearch" ref="employeeIdSearch" src="component" />
+	<store name="employeeFirstNameSearch" ref="employeeFirstNameSearch"
+		src="component" />
+	<event ref="loadEmployees" />
+</event>
 ```
 
 First, we execute a business-action, which will retrieve all departments if
 departmentNameSearch is empty. If departmentNameSearch is not empty;
 it will be used to filter data. We thus only get the departments based on the search criteria
 
-We then set the data to datagrid using the "set" built-in. We then populate the employees,
+We then set the data to data grid using the "set" built-in. We then populate the employees,
 also taking search criteria entered in that panel into account.
 
 In case where we don't have any data in the employee search panel, the query
@@ -358,15 +342,15 @@ will still execute, it will just fetch everything based on the selected departme
 Lastly, we call the loadEmployees event.
 
 ```xml
-	<event id="loadEmployees">
-		<business-action ref="HRFORM1_EMPLOYEES_SELECT_DETAIL">
-			<in name="DEPARTMENT_ID" ref="selectedDepartmentId" />
-			<in name="employeeIdSearch" ref="employeeIdSearch" />
-			<in name="employeeFirstNameSearch" ref="employeeFirstNameSearch" />
-			<out name="selectEmployeesResult" ref="result" />
-		</business-action>
-		<set component-id="HRFORM1_EMPLOYEES_ID" ref="result" />
-	</event>
+<event id="loadEmployees">
+	<business-action ref="HRFORM1_EMPLOYEES_SELECT_DETAIL">
+		<in name="DEPARTMENT_ID" ref="selectedDepartmentId" />
+		<in name="employeeIdSearch" ref="employeeIdSearch" />
+		<in name="employeeFirstNameSearch" ref="employeeFirstNameSearch" />
+		<out name="selectEmployeesResult" ref="result" />
+	</business-action>
+	<set component-id="HRFORM1_EMPLOYEES_ID" ref="result" />
+</event>
 ```
 
 The loadEmployees event is mostly similar to what we have done before.
@@ -378,24 +362,24 @@ We then set the result of the query (stored in selectEmployeesResult) to the dat
 Only one thing left. Hiding the panels when we don't need them anymore.
 
 ```xml
-	<event>
-		<listeners>
-			<listenergroup>
-				<component ref="HRFORM1_DEPARTMENTS_ID.DEPARTMENT_ID" />
-				<component ref="HRFORM1_DEPARTMENTS_ID.DEPARTMENT_NAME" />
-				<component ref="departmentNameSearch" />
-				<listener type="onkeydown">
-					<listener-parameter name="key" value="KEY_SHIFT + F9" />
-				</listener>
-			</listenergroup>
-		</listeners>
-		<clear ref="departmentSearchPanel" />
-		<set-property property="visible" value="false">
-			<component ref="departmentSearchPanel" />
-		</set-property>
-		<store name="departmentNameSearch" value="" />
-		<event ref="loadDepartments" />
-	</event>
+<event>
+	<listeners>
+		<listenergroup>
+			<component ref="HRFORM1_DEPARTMENTS_ID.DEPARTMENT_ID" />
+			<component ref="HRFORM1_DEPARTMENTS_ID.DEPARTMENT_NAME" />
+			<component ref="departmentNameSearch" />
+			<listener type="onkeydown">
+				<listener-parameter name="key" value="KEY_SHIFT + F9" />
+			</listener>
+		</listenergroup>
+	</listeners>
+	<clear ref="departmentSearchPanel" />
+	<set-property property="visible" value="false">
+		<component ref="departmentSearchPanel" />
+	</set-property>
+	<store name="departmentNameSearch" value="" />
+	<event ref="loadDepartments" />
+</event>
 ```
 
 One again, the listener definition is mostly the same, except we change the value to
@@ -404,10 +388,10 @@ One again, the listener definition is mostly the same, except we change the valu
 The "clear" built-in will remove the data of all components inside the panel,
 the panel is then hidden, by setting its visible property to false.
 
-Unfortunately, clearing the panel is not enough. This is because earlier, we defined
-a variable named departmentNameSearch. We need to override it's value.
+Clearing is done reset the search panel; meaning that it clears the value of all components
+inside the referred panel
 
-This will make sure that when calling loadDepartments, all departments are retrieved.
+This will make sure that when calling loadDepartments, all departments are fetched without any filters applied.
 
 With the glue hardened, the views in place and the queries all set up;
-we have achieved enter-query-mode like behaviour in QAFE.
+we have achieved enter-query-mode like behavior in QAFE.
