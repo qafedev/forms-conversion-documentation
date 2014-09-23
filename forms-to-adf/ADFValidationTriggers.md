@@ -2,7 +2,7 @@
 
 In Oracle Form, when an item has a validation trigger, QAFE conversion tool converts them to different artifacts.
 
-![validateItemTrigger](assets/images/adf/validate-item-trigger.png)
+![validateItemTrigger](../assets/images/adf/validate-item-trigger.png)
 
 
 **The PL/SQL code will be converted to a stored-procedure**

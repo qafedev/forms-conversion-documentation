@@ -19,7 +19,7 @@ The following ADF artifacts will be generated when converting a tree with a reco
 
 ## Modify the View Object
 
-![modifyViewObject](assets/images/adf/modif-view-object.png)
+![modifyViewObject](../assets/images/adf/modif-view-object.png)
 
 Open the view object by double-clicking on the view object file, and go to the Query section of the Overview tab, the query should look like this:
 
@@ -40,7 +40,7 @@ Check whether the columns mentioned in the Connect By clause are also present in
 After update the attribute mapping it could be that existing attributes are not updated properly. So check the Name, AliasName and Expression attributes of all the view attributes for correctness, an incorrect example: AliasName='"LEVEL"', single quotes should not present
 
 ## Add the View Link
-![addViewLInk](assets/images/adf/add-view-link.png)
+![addViewLInk](../assets/images/adf/add-view-link.png)
 
   In the Model project, right-click on the com.qualogy.qafe.model.view package and select New->View Link…
 
@@ -58,7 +58,7 @@ After update the attribute mapping it could be that existing attributes are not 
   When a view link is created new view usages will be also created in the application module, next to the original view usage. This is needed, because the generated view usage is being referred in the page definition.
 
 ## Update the Page Definition
-![updatePageDef](assets/images/adf/update-page-def.png)
+![updatePageDef](../assets/images/adf/update-page-def.png)
 
   Double-click on the page definition to open it, and go to the Overview tab.
 
