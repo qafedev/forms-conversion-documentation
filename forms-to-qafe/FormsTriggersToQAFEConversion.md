@@ -20,11 +20,11 @@ Canvas Names : CANVAS1, CANVAS2
 | Forms Built-Ins |QAFE Built-Ins | References |
 |----------|-----------------|---------------------|---------------|---------|
 |SET_ITEM_PROPERTY | ```<set-property>``` | [Sample code](#set_item_property) |
-|HIDE_VIEW | ```<set-property>``` | [Functionality: Canvas Management][] |
+|HIDE_VIEW | ```<set-property>``` | [Sample code][#canvas_management] |
 
 
 ##Converting Oracle Form Triggers to QAFE ##
-
+<a name="canvas_management"></a>
 ### Functionality: Canvas Management ###
 **Scenario: Changing Canvas Visibility / Position Dynamically**
 

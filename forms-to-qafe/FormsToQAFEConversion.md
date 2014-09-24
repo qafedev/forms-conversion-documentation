@@ -19,8 +19,6 @@ Check [here](http://www.qafe.com/developer-docs/oracle-forms/qafe-forms-wizard/)
 
 [Re-using Forms Built-ins](FormsReusableBuiltins.md).
 
-[Re-using Forms Built-ins](FormsReusableBuiltins.md).
-
 [Converting Forms Triggers to QAFE](FormsTriggersToQAFEConversion.md).
 
 [Forms Triggers to QAFE Listeners](FormsTriggersToQAFEListner.md).
