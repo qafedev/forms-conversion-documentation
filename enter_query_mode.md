@@ -10,13 +10,13 @@ A basic understanding of QAFE is assumed throughout this tutorial.
 
 ## The Oracle Form ##
 
-The Oracle Form used for this example exists out of the following properties;
+The Oracle Form used for this example has the following properties;
 
 Form Name: HRFORM1  
 Block Names : DEPARTMENTS, EMPLOYEES  
 Relation : EMPLOYEES.DEPARTMENT_ID = DEPARTMENTS.DEPARTMENT_ID
 
-Details for the tables corresponding to the blocks are as followed:
+Details for the tables corresponding to the blocks are as follows:
 ```sql
 CREATE TABLE EMPLOYEES (
 	EMPLOYEE_ID NUMBER(6,0),
@@ -34,12 +34,12 @@ CREATE TABLE DEPARTMENTS (
 );
 ```
 
-With the above knowledge in mind, we can convert out application to QAFE.
+With this in mind, we can convert out application to QAFE.
 
 ## Result after QAFE Conversion ##
 
-After converting our form, both blocks are converted including their statements
-to populate the data.
+After converting our form, both blocks, including their statements
+are converted to populate the data.
 
 A UI similar to the example below will be generated.
 
@@ -62,7 +62,7 @@ HRFORM1_EMPLOYEES_ID and HRFORM1_DDEPARTMENTS_ID respectively.
 After running the application, we can verify that the relation is converted correctly
 by clicking on the master (departments). This will result in employees being updated.
 
-The converted statements will look like the following.
+The converted statements should look like the following.
 
 ```xml
 <select id="HRFORM1_DEPARTMENTS_SELECT_BASETYPE">
@@ -129,7 +129,7 @@ Implementing enter-query-mode in QAFE can be broken down in 3 parts;
 
 ### Adding search support to the view ###
 
-To support enter-search-query like search, we will need to add several components.
+To support enter-search-query like search, we need to add several components.
 We prefer to use a separate panel to hold the search fields. Based on keyboard input,
 we will show and hide this panel.
 
@@ -167,7 +167,7 @@ When enabled, the application should look something like:
 ### Modifying the queries ###
 
 Now that the UI is finished, we can focus on enabling the queries for search.
-After that, we can connect the 2 together using events as the glue.
+After that, we can connect the two, using events as the glue.
 
 Adding search criteria to the queries is simple enough.
 
@@ -234,16 +234,16 @@ Next up, the glue that sticks it all together.
 
 ### Sticking it all together: Events ###
 
-Before defining the events, here are some key points about the behaviour;
+Before defining the events, here are some handy shortcuts for you to know;
 
-* Pressing F7 when focused on one of the grids will open their corresponding
+* Pressing F7 when focused on one of the grids opens the corresponding
 search panel
-* Pressing F8 will fire the queries to fetch data based on search criteria
+* Pressing F8 fires the queries to fetch data based on search criteria
 and update both the master and detail
 * Pressing Shift + F9 will both hide the panel, and do a select without search
 criteria
 
-I will show how to deal with this on based on the master, because the detail is
+I'll show how to deal with this based on the master, because the detail is
 easier to deal with.
 
 Handling F7:
@@ -270,7 +270,7 @@ In the component ref, the pattern is [datagrid column id].[database column]
 As a listener, we define a type "onkeydown" which handles keyboard in-put.
 In the listener parameter, we define what key we are talking about. F7 in this case.
 
-You will notice this pattern will be the same for most coming events.
+You'll notice this pattern will be the same for most coming events.
 
 In the body (coming after the listeners section) we set the visibility of a component to true
 The component in this case being a panel (and all its child components).
@@ -329,15 +329,15 @@ loadDepartments event:
 </event>
 ```
 
-First, we execute a business-action, which will retrieve all departments if
+First, we execute a business-action, which retrieves all departments if
 departmentNameSearch is empty. If departmentNameSearch is not empty;
-it will be used to filter data. We thus only get the departments based on the search criteria
+it will be used to filter data. Thus, we only get the departments based on the search criteria.
 
-We then set the data to data grid using the "set" built-in. We then populate the employees,
+Then, we set the data to data grid using the "set" built-in. Populate the employees,
 also taking search criteria entered in that panel into account.
 
-In case where we don't have any data in the employee search panel, the query
-will still execute, it will just fetch everything based on the selected department.
+In case there is no data in the employee search panel, the query
+still executes, it just fetches everything based on the selected department.
 
 Lastly, we call the loadEmployees event.
 
@@ -385,13 +385,13 @@ Only one thing left. Hiding the panels when we don't need them anymore.
 One again, the listener definition is mostly the same, except we change the value to
 "KEY_SHIFT + F9".
 
-The "clear" built-in will remove the data of all components inside the panel,
+The "clear" built-in removes the data of all components inside the panel,
 the panel is then hidden, by setting its visible property to false.
 
-Clearing is done reset the search panel; meaning that it clears the value of all components
+Clearing is done resetting the search panel; meaning that it clears the value of all components
 inside the referred panel
 
-This will make sure that when calling loadDepartments, all departments are fetched without any filters applied.
+This makes sure that, when calling loadDepartments, all departments are fetched without any filters applied.
 
 With the glue hardened, the views in place and the queries all set up;
 we have achieved enter-query-mode like behavior in QAFE.
