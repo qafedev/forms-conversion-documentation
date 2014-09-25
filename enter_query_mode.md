@@ -388,7 +388,7 @@ One again, the listener definition is mostly the same, except we change the valu
 The "clear" built-in removes the data of all components inside the panel,
 the panel is then hidden, by setting its visible property to false.
 
-Clearing is done resetting the search panel; meaning that it clears the value of all components
+Clearing is done to reset the search panel; meaning that it clears the value of all components
 inside the referred panel
 
 This makes sure that, when calling loadDepartments, all departments are fetched without any filters applied.
