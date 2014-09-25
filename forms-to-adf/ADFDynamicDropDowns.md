@@ -36,11 +36,11 @@ Artifacts Generated:
 
 ##Post Generation Steps
 
-Only change you have do after conversion is to change the SQLQuery based on the FMB.
+The only change you have to make after conversion is to change the SQLQuery based on the FMB.
 
-Make sure ValueField and DisplayNameField  are used as alias for the columns.
+Make sure ValueField and DisplayNameField are used as alias for the columns.
 
-For example if actual select statement for populating the drop down is ,
+For example; if actual select statement for populating the drop down is ,
 
 ```sql
     SELECT distinct content_name , to_char(mentc_id) mentc_id
