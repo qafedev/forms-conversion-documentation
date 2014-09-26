@@ -131,7 +131,7 @@ Check the select statement involved and use that to load the data to block.
 
 **Block definition:**  
 
-*Form Name* **:** FORM1
+*Form Name* **:** FORM1  
 *Block Name* **:** PRODUCTS  
 *Query Data Source Name* **:** PRODUCTS  
 *WHERE Clause* **:** product_id >= 0  
@@ -148,7 +148,7 @@ Data is populated when the trigger code calls execute_query built-in, navigation
 Based on properties of the block select SQL statement and corresponding business-action and integration-tier methods will be generated.
 
 Select statement generated can be found in FORM1-statements.xml
-```xml
+```sql
   <select id="FORM1_PRODUCTS_SELECT_BASETYPE"><![CDATA[
     SELECT * FROM PRODUCTS WHERE PRODUCT_ID >=0 ORDER BY PRODUCT_ID
   ]]></select>
@@ -172,6 +172,7 @@ Business Action generated to invoke this method can be found in FORM1-business-t
 ```
 
 To populate data to the block PRODUCTS we have to invoke this business-action and set the result to the user interface.
+For example we can invoke this code from onload event of the main window.
 
 ```xml
   <business-action ref="FORM1_PRODUCTS_SELECT_BASETYPE">
@@ -198,7 +199,7 @@ Block Definition:
 *Block Name* **:** PRODUCTS  
 *Query Data Source Name* **:** PRODUCTS  
 *WHERE Clause* **:** product_id >= 0  
-*ORDER BY Clause* **:** product_id
+*ORDER BY Clause* **:** product_id  
 *Database Items* **:**  PRODUCT_NAME, PRODUCT_ID, PRODUCT_DIS, CREATED_BY_USER_ID, UPDATED_BY_USER_ID  
 *Non-Database Items* **:**  CREATED_BY_USER_ID_DIS, UPDATED_BY_USER_ID_DIS
 
@@ -215,14 +216,14 @@ Block Definition:
 
 Based on block's Query Data Source Name, WHERE Clause and ORDER BY Clause the data will be populated to block. In this case we need some lookup data from another table to be filled in some items in the block. So POST-QUERY will be executed for all rows in the block to populate the additional information.  
 
-Here PRODUCT_NAME, PRODUCT_ID, PRODUCT_DIS, CREATED_BY_USER_ID and UPDATED_BY_USER_ID are populated based on the table TABLE1. Non database fields CREATED_BY_USER_ID_DIS and UPDATED_BY_USER_ID_DIS are populated using the POST-QUERY code.
+Here PRODUCT_NAME, PRODUCT_ID, PRODUCT_DIS, CREATED_BY_USER_ID and UPDATED_BY_USER_ID are populated based on the table PRODUCTS. Non database fields CREATED_BY_USER_ID_DIS and UPDATED_BY_USER_ID_DIS are populated using the POST-QUERY code.
 
 **QAFE Conversion:**
 
 Based on properties of the block select SQL statement and corresponding business-action and integration-tier methods will be generated.
 
 Select statement generated can be found in FORM1-statements.xml
-```xml
+```sql
   <select id="FORM1_PRODUCTS_SELECT_BASETYPE"><![CDATA[
     SELECT * FROM PRODUCTS WHERE PRODUCT_ID >=0 ORDER BY PRODUCT_ID
   ]]></select>
@@ -270,9 +271,9 @@ Apart from this one event is generated in FORM1-global-events.qaml file with id 
 When the post query code is simple select statements, we can make a JOIN statement which can also retrieve the look up data.
 
 In this case we can modify the SQL statement as,
-```xml
+```sql
   <select id="FORM1_PRODUCTS_SELECT_BASETYPE"><![CDATA[
-    SELECT FR_PRODUCTS.*, a.user_name CREATED_BY_USER_ID_DIS , b.user_name UPDATED_BY_USER_ID_DIS
+    SELECT PRODUCTS.*, a.user_name CREATED_BY_USER_ID_DIS , b.user_name UPDATED_BY_USER_ID_DIS
     FROM PRODUCTS
     LEFT OUTER JOIN USERS a ON a.user_id = created_by_user_id
     LEFT OUTER JOIN USERS b ON b.user_id = last_updated_by_user_id
@@ -286,8 +287,6 @@ Here we have to make sure the data retrieved matches the lookup item's name attr
 Only change we have to make for converting the POST-QUERY code is the statements file, other layers remain the same.
 
 In one database call we get all information needed to populate the block which will improve performance. So writing JOIN statement is the recommended way to convert POST-QUERY code.
-
-
 
 
 Check the document [Forms Builit-In Handling](FormsBuiltinsHandling.md)
