@@ -183,15 +183,15 @@ For example we can invoke this code from onload event of the main window.
 FORM1_PRODUCTS_ID is the ID of the QAFE data-grid equivalent to PRODUCTS.  
 FORM1_PRODUCTS_SELECT_BASETYPE is the business-action to select data from database for PRODUCTS.  
 
-- When PRODUCTS is multi-record block, the equivalent QAFE component generated is a data-grid. We can use ID of the datagrid to set data to it using ```<set component-id="FORM1_PRODUCTS_ID"```.  
+- When PRODUCTS is multi-record block, the equivalent QAFE component generated is a data-grid. We can use ID of the datagrid to set data to it using ```<set component-id="FORM1_PRODUCTS_ID" ref="PRODUCTS_SELECT_BASETYPEOut"```.  
 - When PRODUCTS is single-record block, each item in block will be converted to QAFE UI components with same  
-group-name (FORM1_PRODUCTS_ALL) corresponding to the block. So we can use ```<set group-name="FORM1_PRODUCTS_ALL">``` to set data to user interface.
+group-name (FORM1_PRODUCTS_ALL) corresponding to the block. So we can use ```<set group-name="FORM1_PRODUCTS_ALL" ref="PRODUCTS_SELECT_BASETYPEOut">``` to set data to user interface.
 
 ### 5.2 Implement Block Level Triggers
 Check the block triggers(PRE/POST-QUERY) and implement the same in QAFE using script file or modifying the select statement.
 
-### Trigger: POST-QUERY
-#### Scenario : Populate look up data to multi record block
+#### Trigger: POST-QUERY
+##### Scenario : Populate look up data to multi record block
 
 Block Definition:
 
@@ -257,9 +257,9 @@ To populate data to the block PRODUCTS we have to invoke this business-action an
 FORM1_PRODUCTS_ID is the ID of the QAFE data-grid equivalent to PRODUCTS.  
 FORM1_PRODUCTS_SELECT_BASETYPE is the business-action to select data from database for PRODUCTS.  
 
-- When PRODUCTS is multi-record block, the equivalent QAFE component generated is a data-grid. We can use ID of the datagrid to set data to it using ```<set component-id="FORM1_PRODUCTS_ID"```.  
+- When PRODUCTS is multi-record block, the equivalent QAFE component generated is a data-grid. We can use ID of the datagrid to set data to it using ```<set component-id="FORM1_PRODUCTS_ID" ref="PRODUCTS_SELECT_BASETYPEOut"```.  
 - When PRODUCTS is single-record block, each item in block will be converted to QAFE UI components with same  
-group-name (FORM1_PRODUCTS_ALL) corresponding to the block. So we can use ```<set group-name="FORM1_PRODUCTS_ALL">``` to set data to user interface.
+group-name (FORM1_PRODUCTS_ALL) corresponding to the block. So we can use ```<set group-name="FORM1_PRODUCTS_ALL" ref="PRODUCTS_SELECT_BASETYPEOut">``` to set data to user interface.
 
 Now the data will be populated only to the database items which corresponds to the columns in table PRODUCTS.
 
@@ -296,6 +296,168 @@ Check the document [Re-usable Forms Builit-Ins](FormsReusableBuiltins.md)
 
 ### 5.3 Implement INSERT / UPDATE / DELETE operations.
 Check the block triggers related(PRE/POST- INSERT/UPDATE/DELETE) and implement the same in QAFE using script file or modifying the select statement.
+
+<a name="save_records_multi_record"></a>
+#### Scenario : Save modified records of multi-record block
+
+Block Definition:
+
+*Form Name* **:** FORM1  
+*Block Name* **:** PRODUCTS  
+*Query Data Source Name* **:** PRODUCTS  
+*WHERE Clause* **:** product_id >= 0  
+*ORDER BY Clause* **:** product_id  
+*Database Items* **:**  PRODUCT_NAME, PRODUCT_ID, PRODUCT_DIS, CREATED_BY_USER_ID, UPDATED_BY_USER_ID, LAST_UPDATED_DATE  
+*Non-Database Items* **:**  CREATED_BY_USER_ID_DIS, UPDATED_BY_USER_ID_DIS
+
+**Functionality Handled:**
+
+User is allowed to update records in a multi-record block and the data gets saved to database on save action.
+
+**QAFE Conversion:**
+As part of conversion statement to update the table is generated with corresponding integration method and business-action.
+
+Update statement generated can be found in FORM1-statements.xml
+```sql
+  <update id="FORM1_PRODUCTS_UPDATE_BASETYPE"><![CDATA[
+    UPDATE PRODUCTS
+    SET CREATED_BY_USER_ID = :CREATED_BY_USER_ID , CREATED_DATE = :CREATED_DATE ,
+    LAST_UPDATED_BY_USER_ID = :LAST_UPDATED_BY_USER_ID ,
+    LAST_UPDATED_DATE = :LAST_UPDATED_DATE , PRODUCT_ID = :PRODUCT_ID
+    WHERE ID = :ID
+  ]]></update>
+
+```
+Integration-tier method generated to invoke this statement can be found in FORM1-integration-tier.xml
+
+```xml
+  <method id="PRODUCTS_UPDATE_BASETYPE" name="FORM1_PRODUCTS_UPDATE_BASETYPE" scrollable="true">
+    <in name="PRODUCTS_UPDATE_BASETYPEIn"/>
+    <out name="result"/>
+  </method>
+```
+PRODUCTS_UPDATE_BASETYPEIn is a map(key-value pairs) containing the binding variables like :PRODUCT_ID as key.
+
+Business Action generated to invoke method can be found in FORM1-business-tier.xml
+
+When PRODUCTS is a multi record block the business-action generated is expecting a list of records updated and for all records it calls the service method to update the record.
+```xml
+  <business-action id="FORM1_PRODUCTS_UPDATE_BASETYPE_Iterator">
+    <transaction managed="no"/>
+    <iteration begin="0" increment="1" items-ref="PRODUCTS_UPDATE_BASETYPEIn_List"
+        var="PRODUCTS_UPDATE_BASETYPEIn" var-index="index">
+      <service ref="FORM1" method-ref="PRODUCTS_UPDATE_BASETYPE">
+        <in name="PRODUCTS_UPDATE_BASETYPEIn" ref="PRODUCTS_UPDATE_BASETYPEIn"/>
+        <out name="result" ref="result"/>
+      </service>
+    </iteration>
+  </business-action>
+```
+
+In case of Multi-record block, the block will be converted as a QAFE data-grid and an event is generated on save action of the data-grid as follows.
+
+In QAML Builder,
+- Click on the data-grid (Properties view shows "datagrid")
+- Click on Events section below Properties.
+- There you can see the event with Component "datagridId.save"
+
+```xml
+  <event id="FORM1_PRODUCT_WIN_FORM1_PRODUCTS_ID.savePRODUCT_NAME_onclick">
+    <listeners>
+      <listenergroup>
+        <component ref="FORM1_PRODUCTS_ID.save"/>
+        <listener type="onclick"/>
+      </listenergroup>
+    </listeners>
+    <store name="modifiedRecords" ref="FORM1_PRODUCTS_ID.$$MODIFIED" src="component"/>
+    <store name="deletedRecords" ref="FORM1_PRODUCTS_ID.$$DELETED" src="component"/>
+    <store name="newRecords" ref="FORM1_PRODUCTS_ID.$$NEW" src="component"/>
+    <if>
+      <expression expr="len(${modifiedRecords}) > 0"/>
+      <results>
+        <result value="true">
+          <business-action ref="FORM1_PRODUCTS_UPDATE_BASETYPE_Iterator">
+            <in name="PRODUCTS_UPDATE_BASETYPEIn_List" ref="modifiedRecords"/>
+            <out name="result" ref="result"/>
+          </business-action>
+        </result>
+      </results>
+    </if>
+    ..
+  </event>
+```
+FORM1_PRODUCTS_ID is the ID of the QAFE data-grid equivalent to PRODUCTS block.  
+FORM1_PRODUCTS_UPDATE_BASETYPE_Iterator is the business-action to update the modified records.  
+$$MODIFIED is the QAFE keyword to retrieve the modified records in a data-grid. FORM1_PRODUCTS_ID.$$MODIFIED is list of map (key-value pairs) representing the records.
+
+(Same way you can use $$DELETED and $$NEW to get deleted and new records in data-grid and use for insert or delete operations.)
+
+This code will make sure the all the modified records in the data-grid is updated to database.
+
+#### 5.3.1 PRE-UPDATE trigger
+
+#### Scenario : Update additional data other than the block definition
+
+**Trigger Code**
+```
+  :products.last_updated_by_user_id = :last_updated_by_user_id,   := :global.user_id;
+  :products.last_updated_date  := sysdate;
+```
+
+**Functionality Handled:**
+
+When any record in the block is updated by a user, the logged-in user_id and time of update should be stored.
+
+Here user_id is available in global scope and the value for it is set when the user logs-in. Also last_updated_date is getting updated as the current date.
+
+**QAFE Conversion:**
+
+Check [How the Update action is handled in QAFE](#save_records_multi_record)
+
+Since the trigger code is not a complex logic we can try to incorporate that in the update statement itself. This will make sure in place we handle the update operation.
+
+For this we can modify the corresponding update statement to also update last_updated_by_user_id and last_updated_date.
+
+Generated Update statement
+```sql
+  <update id="FORM1_PRODUCTS_UPDATE_BASETYPE"><![CDATA[
+    UPDATE PRODUCTS
+    SET CREATED_BY_USER_ID = :CREATED_BY_USER_ID , CREATED_DATE = :CREATED_DATE ,
+    LAST_UPDATED_BY_USER_ID = :LAST_UPDATED_BY_USER_ID ,
+    LAST_UPDATED_DATE = :LAST_UPDATED_DATE , PRODUCT_ID = :PRODUCT_ID
+    WHERE ID = :ID
+  ]]></update>
+```
+
+Modified Update statement to include PRE-UPDATE trigger code
+```sql
+  <update id="FORM1_PRODUCTS_UPDATE_BASETYPE"><![CDATA[
+    UPDATE PRODUCTS
+    SET CREATED_BY_USER_ID = :CREATED_BY_USER_ID , CREATED_DATE = :CREATED_DATE ,
+    LAST_UPDATED_BY_USER_ID = :LAST_UPDATED_BY_USER_ID ,
+    LAST_UPDATED_DATE = :LAST_UPDATED_DATE , PRODUCT_ID = :PRODUCT_ID ,
+    LAST_UPDATED_BY_USER_ID = :USER_ID, LAST_UPDATED_DATE  = sysdate
+    WHERE ID = :ID
+  ]]></update>
+```
+- **:USER_ID** is the new binding variable added, which needs to be passed while invoking this statement.
+- **LAST_UPDATED_DATE** is set directly to use sysdate of database
+
+Make sure in the event when invoking the update action, you pass the variable LAST_UPDATED_BY_USER_ID with proper value.
+
+```xml
+  <business-action ref="FORM1_PRODUCTS_UPDATE_BASETYPE_Iterator">
+    <in name="PRODUCTS_UPDATE_BASETYPEIn_List" ref="modifiedRecords"/>
+    <in name="USER_ID" ref="LOGGED_IN_USER_ID" src="global"/>
+    <out name="result" ref="result"/>
+  </business-action>
+```
+
+Also include the USER_ID as extra input variable in corresponding business-action and integration tier method.
+```xml
+  <in name="USER_ID" ref="USER_ID" />
+```
+
 
 ### 5.4 Handle Master-Detail Relations
 Check Relations of the block and invoke the detail population based on selection in master.
