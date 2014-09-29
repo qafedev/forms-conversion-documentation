@@ -289,7 +289,7 @@ Only change we have to make for converting the POST-QUERY code is the statements
 In one database call we get all information needed to populate the block which will improve performance. So writing JOIN statement is the recommended way to convert POST-QUERY code.
 
 
-Check the document [Forms Builit-In Handling](FormsBuiltinsHandling.md)
+Check the document [Forms Builit-In Handling](FormsTriggersToQAFEConversion.md)
 
 Check the document [Re-usable Forms Builit-Ins](FormsReusableBuiltins.md)
 
@@ -308,7 +308,7 @@ Check the trigger code for button and implement it in QAFE by using generated da
 Implement Validation for components
 Check the trigger code for validation and implement  it in QAFE by using generated database script or re-writing using QAML.
 
-Check the document [Forms Builit-In Handling](FormsBuiltinsHandling.md)
+Check the document [Forms Builit-In Handling](FormsTriggersToQAFEConversion.md)
 
 ## 7.Styling
 Styling (CSS).
@@ -340,3 +340,13 @@ Assume for the form Console Window is mentioned as WINDOW1 for the Form FORM1
 Oracle Form WINDOW1 will be converted to QAFE Window with id FORM1_WINDOW1
 
 FORM1_WINDOW1 can be count in the file FORM1-presentation-tier-FORM1_WINDOW1.qaml
+
+### 8.4 Changing the length of a column in database
+
+Suppose we have a field displayed on a QAFE as part of conversion, and the field used to be 200 characters long. Now, we want to increase the length of the field to 2000.
+
+Length of the field is used in QAFE at 2 places.
+- In QAML client side code to restrict the user entering more characters using "max-length" attribute of the component.
+- In equivalent Database Object Types used.
+
+So for changing the length we might have to modify these two places.
