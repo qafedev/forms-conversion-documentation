@@ -388,7 +388,7 @@ In QAML Builder,
 ```
 FORM1_PRODUCTS_ID is the ID of the QAFE data-grid equivalent to PRODUCTS block.  
 FORM1_PRODUCTS_UPDATE_BASETYPE_Iterator is the business-action to update the modified records.  
-$$MODIFIED is the QAFE keyword to retrieve the modified records in a data-grid. FORM1_PRODUCTS_ID.$$MODIFIED is list of map (key-value pairs) representing the records.
+$$MODIFIED is the QAFE keyword to retrieve the modified records in a data-grid. FORM1_PRODUCTS_ID.$$MODIFIED returns list of map (key-value pairs) representing the modified records.
 
 (Same way you can use $$DELETED and $$NEW to get deleted and new records in data-grid and use for insert or delete operations.)
 
@@ -400,7 +400,7 @@ This code will make sure the all the modified records in the data-grid is update
 
 **Trigger Code**
 ```
-  :products.last_updated_by_user_id = :last_updated_by_user_id,   := :global.user_id;
+  :products.last_updated_by_user_id := :global.user_id;
   :products.last_updated_date  := sysdate;
 ```
 
@@ -443,6 +443,33 @@ Modified Update statement to include PRE-UPDATE trigger code
 - **:USER_ID** is the new binding variable added, which needs to be passed while invoking this statement.
 - **LAST_UPDATED_DATE** is set directly to use sysdate of database
 
+Also include the USER_ID as extra input variable in corresponding integration tier method and business-action.
+```xml
+  <method id="PRODUCTS_UPDATE_BASETYPE" name="FORM1_PRODUCTS_UPDATE_BASETYPE" scrollable="true">
+    <in name="PRODUCTS_UPDATE_BASETYPEIn"/>
+    <in name="USER_ID" ref="USER_ID"/>
+    <out name="result"/>
+  </method>
+```
+PRODUCTS_UPDATE_BASETYPEIn is a map(key-value pairs) containing the binding variables like :PRODUCT_ID as key.
+
+Business Action generated to invoke method can be found in FORM1-business-tier.xml
+
+When PRODUCTS is a multi record block the business-action generated is expecting a list of records updated and for all records it calls the service method to update the record.
+```xml
+  <business-action id="FORM1_PRODUCTS_UPDATE_BASETYPE_Iterator">
+    <transaction managed="no"/>
+    <iteration begin="0" increment="1" items-ref="PRODUCTS_UPDATE_BASETYPEIn_List"
+        var="PRODUCTS_UPDATE_BASETYPEIn" var-index="index">
+      <service ref="FORM1" method-ref="PRODUCTS_UPDATE_BASETYPE">
+        <in name="PRODUCTS_UPDATE_BASETYPEIn" ref="PRODUCTS_UPDATE_BASETYPEIn"/>
+        <in name="USER_ID" ref="USER_ID"/>
+        <out name="result" ref="result"/>
+      </service>
+    </iteration>
+  </business-action>
+```
+
 Make sure in the event when invoking the update action, you pass the variable LAST_UPDATED_BY_USER_ID with proper value.
 
 ```xml
@@ -452,12 +479,6 @@ Make sure in the event when invoking the update action, you pass the variable LA
     <out name="result" ref="result"/>
   </business-action>
 ```
-
-Also include the USER_ID as extra input variable in corresponding business-action and integration tier method.
-```xml
-  <in name="USER_ID" ref="USER_ID" />
-```
-
 
 ### 5.4 Handle Master-Detail Relations
 Check Relations of the block and invoke the detail population based on selection in master.
