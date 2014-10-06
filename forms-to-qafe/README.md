@@ -48,6 +48,11 @@ Check the generated sql scripts in the database, located in a folder with name o
 Check the converted script file and see how much logic is in the triggers and how much we can reuse.
 Individual procedures in this script can be executed in database as needed.
 
+One of the generated script files is generated as a .txt file. This is intended.
+The reason for this is, we want to convert and preserve the logic, so you can re-use/copy-paste code contained in it,
+but at the same time, master-detail is handled differently in QAFE. You can find out more by going to the following link:
+[Master-Detail database script](FormsMasterDetailBlocksToQAFEConversion.md).
+
 
 ## 3. UI Changes
 Open the FMB in the Forms Builder.
