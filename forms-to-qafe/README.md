@@ -49,8 +49,7 @@ Check the converted script file and see how much logic is in the triggers and ho
 Individual procedures in this script can be executed in database as needed.
 
 One of the generated script files is generated as a .txt file. This is intended.
-The reason for this is, we want to convert and preserve the logic, so you can re-use/copy-paste code contained in it,
-but at the same time, master-detail is handled differently in QAFE. You can find out more by going to the following link:
+The reason for this is, we want to convert and preserve as much of your logic as possible for your convinience, so you can re-use/copy-paste code contained in it. At the same time, master-detail is handled differently in QAFE for which you can find details on in the following link:
 [Master-Detail database script](FormsMasterDetailBlocksToQAFEConversion.md).
 
 
