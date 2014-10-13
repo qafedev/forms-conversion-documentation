@@ -124,6 +124,134 @@ group-name (FORM1_BLOCK1_ALL) corresponding to the block. So we can use ```<set 
 Also check the document [Forms Builit-In Handling](FormsTriggersToQAFEConversion.md#trigger_block_management) for more details.
 
 
+### Trigger: WHEN-NEW-FORM-INSTANCE
+#### Scenario : When opening the Form data is populated to List Items(drop-down) using a Program Unit
+
+**Trigger Code:**
+```
+  populate_modifiers_list;
+```
+populate_modifiers_list is a Program Unit.
+
+```sql
+  PROCEDURE populate_modifiers_list
+    IS
+      CURSOR c1_user
+      IS
+        SELECT DISTINCT u.user_name ,
+          TO_CHAR(u.user_id) user_id
+        FROM fr_users u,
+          mentc c
+        WHERE u.user_id = c.last_updated_by
+        ORDER BY user_name,
+          user_id;
+    BEGIN
+      clear_list('bl_control.pl_select_modifier');
+      add_list_element('bl_control.pl_select_modifier', 1, 'All Users','%' );
+      FOR c1_rec IN c1_user
+      LOOP
+        add_list_element('bl_control.pl_select_modifier', c1_user%rowcount, c1_rec.user_name,c1_rec.user_id );
+      END LOOP;
+    EXCEPTION
+    WHEN OTHERS THEN
+      :bl_control.messages := ('Unable to Populate Modifier List, '||sqlerrm||', Please contact Technical Support');
+  END;
+```
+
+**Functionality Handled:**
+
+When the form is loaded data needs to be loaded to a List-Item(drop-down) component.
+Here the item "**pl_select_modifier**" inside block "**bl_control**" is the component to populate data.
+
+
+**QAFE Conversion:**
+
+In this case "FORM1" is the form name.
+
+The Oracle form item pl_select_modifier will be converted as a QAFE dropdown component as follows.
+
+```xml
+  <dropdown id="FORM1_BL_CONTROL_PL_SELECT_MODIFIER" name="PL_SELECT_MODIFIER"
+     group-name="FORM1_BL_CONTROL_ALL" />
+```
+
+All the Program Units are converted as database procedures(in script files generated) and corresponding call statement, integration-tier method, business-actions are generated.
+Database procedures are created with in/out variables based on the blocks used the code.
+
+Statements.xml file entry for invoking database procedures.
+
+```xml
+  <call id="FORM1_POPULATE_MODIFIERS_LIST" call-name="FORM1_TRIGGERS.POPULATE_MODIFIERS_LIST"
+      sql="{call FORM1_TRIGGERS.POPULATE_MODIFIERS_LIST(?,?)}"/>
+```
+Integration-tier method
+
+```xml
+  <method id="POPULATE_MODIFIERS_LIST" name="FORM1_POPULATE_MODIFIERS_LIST">
+    <in name="P_BL_CONTROL" ref="P_BL_CONTROL"/>
+    <out name="P_BL_CONTROL" ref="P_BL_CONTROL"/>
+    <out name="QAFE_BUILT_IN_LIST" ref="QAFE_BUILT_IN_LIST"/>
+  </method>
+```
+Business-Action
+
+```xml
+  <business-action id="FORM1_POPULATE_MODIFIERS_LIST">
+    <transaction managed="no"/>
+    <service ref="FORM1" method-ref="POPULATE_MODIFIERS_LIST">
+      <in name="P_BL_CONTROL" ref="P_BL_CONTROL"/>
+      <out name="P_BL_CONTROL" ref="P_BL_CONTROL"/>
+      <out name="QAFE_BUILT_IN_LIST" ref="QAFE_BUILT_IN_LIST"/>
+    </service>
+  </business-action>
+```
+
+Database procedures are useful when we have to handle lot of code in back-end.
+In this case we case we can move the select statement in the Program Unit code as a QAFE SQL Statement and set the result to the QAFE drop-down component.
+
+For that change the call statement as a select statement using the query used in "populate_modifiers_list" Program Unit.
+
+```xml
+  <select id="MENTCB01_POPULATE_MODIFIERS_LIST"><![CDATA[
+  	SELECT  distinct  u.user_name ,
+    				to_char(u.user_id) user_id
+      FROM fr_users u, mentc c
+      where u.user_id = c.last_updated_by
+      order by  user_name, user_id
+  	]]></select>
+```
+Change integration-tier method , remove the inputs and add an output variable to get result of select statement.
+```xml
+  <method id="POPULATE_MODIFIERS_LIST" name="MENTCB01_POPULATE_MODIFIERS_LIST">
+    <out name="POPULATE_MODIFIERS_LISTOut" />
+  </method>
+```
+
+Change business-action method based on modified integration-tier method.
+
+```xml
+  <business-action id="FORM1_POPULATE_MODIFIERS_LIST">
+    <transaction managed="no"/>
+    <service ref="FORM1" method-ref="POPULATE_MODIFIERS_LIST">
+      <out name="POPULATE_MODIFIERS_LISTOut" ref="POPULATE_MODIFIERS_LISTOut"/>
+    </service>
+  </business-action>
+```
+
+Now we can invoke this business action from the "onload" event of the main window and set the result to the drop-down component.
+
+```xml
+  <business-action ref="FORM1_POPULATE_MODIFIERS_LIST">
+    <out name="POPULATE_MODIFIERS_LISTOut" ref="POPULATE_MODIFIERS_LISTOut"/>
+  </business-action>
+
+  <set component-id="FORM1_BL_CONTROL_PL_SELECT_MODIFIER" src="pipe" ref="POPULATE_MODIFIERS_LISTOut">
+    <mapping key="id" value="USER_ID"/>
+    <mapping key="value" value="USER_NAME"/>
+  </set>
+```
+
+
 ## 5. Database Block Conversion (For each Block)
 
 <a name="block_sql_statements"></a>
