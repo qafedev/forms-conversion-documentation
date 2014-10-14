@@ -422,7 +422,6 @@ Check the document [Forms Builit-In Handling](FormsTriggersToQAFEConversion.md)
 
 Check the document [Re-usable Forms Builit-Ins](FormsReusableBuiltins.md)
 
-
 ### 5.3 Implement INSERT / UPDATE / DELETE operations.
 Check the block triggers related(PRE/POST- INSERT/UPDATE/DELETE) and implement the same in QAFE using script file or modifying the select statement.
 
