@@ -22,7 +22,7 @@ This can be found in src/main/script/FORM1 folder of your QAFE Project with name
 Apart from this QAFE provides script file QAFE_BUILT_IN.sql and QAFE_BUILT_IN_BODY.sql which handles the Oracle Forms Built-Ins (src/main/script folder).
 
 MAIN_SCRIPT_Package_Script_FORM1 uses QAFE_BUILT_IN Package to handle some of the Oracle Forms Built-Ins.
-To Execute any built-In in your script file you have to prefix the built-in with QAFE_BUILT_IN.
+To Execute any built-In in your script file you have to prefix the built-in with the `QAFE_BUILT_IN.` string.
 
 For Example your trigger code use SET_ITEM_PROPERTY('BLOCK1.ITEM1', visible, property_false);
 
