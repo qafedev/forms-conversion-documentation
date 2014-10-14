@@ -184,6 +184,28 @@ QAFE_BUILT_IN.SHOW_VIEW('CANVAS1');
 ```
 Panel with name CANVAS1 is made visible
 
+## Oracle Forms Built-In : SET_VIEW_PROPERTY
+
+**Oracle Forms Syntax :**
+```sql
+ set_view_property ('CANVAS1', visible, property_true);
+```
+
+**QAFE Built-In Syntax in Procedure :**
+```sql
+QAFE_BUILT_IN.set_view_property ('CANVAS1', QAFE_BUILT_IN.visible, QAFE_BUILT_IN.property_true);
+```
+
+**QAFE Built-In Executed:**
+
+```xml
+<set-property property="visible" value="true">
+  <component ref="CANVAS1"/>
+</set-property>
+
+```
+Panel with name CANVAS1 is made visible
+
 ## Oracle Forms Built-In : GO_BLOCK
 
 **Oracle Forms Syntax :**
