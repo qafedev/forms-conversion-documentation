@@ -318,3 +318,27 @@ QAFE_BUILT_IN.CLEAR_ITEM;
   <clear ref="FORM1_BLOCK1_ITEM1" />
   BLOCK1_ITEM1 is the component-id generated for ITEM1.
 ```
+
+## Oracle Forms Built-In : DEFAULT_VALUE
+
+**Oracle Forms Syntax :**
+```xml
+default_value('Assign default value to global variable','GLOBAL.TEST');
+```
+
+**QAFE Built-In Syntax in Procedure :**
+```xml
+p_global_test := nvl(p_global_test,'Assign default value to global variable'); --default_value('Assign default value to global variable',p_global_test);
+```
+
+**QAFE Built-In Executed:**
+
+```xml
+<business-action ref="QFC254_BLOCK3_PUSH_BUTTON6_WMC">
+  <in name="p_global_test" ref="p_global_test" src="global"/>
+  <out name="p_global_test" ref="p_global_test"/>
+</business-action>
+<store target="global" name="p_global_test" ref="p_global_test"/>
+```
+
+The DEFAULT_VALUE built-in is handled in a different way than the other built-ins. The global variable is made into an in/output parameter of the stored procedure. Input is the global value in QAFE and the output is the default value state in the trigger code. The new default value will overwrite the old global value, when the business action is finished processing.
