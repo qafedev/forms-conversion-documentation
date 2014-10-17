@@ -334,7 +334,7 @@ p_global_test := nvl(p_global_test,'Assign default value to global variable'); -
 **QAFE Built-In Executed:**
 
 ```xml
-<business-action ref="QFC254_BLOCK3_PUSH_BUTTON6_WMC">
+<business-action ref="FORM1_BLOCK1_PUSH_BUTTON1_WMC">
   <in name="p_global_test" ref="p_global_test" src="global"/>
   <out name="p_global_test" ref="p_global_test"/>
 </business-action>
