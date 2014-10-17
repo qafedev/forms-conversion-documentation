@@ -341,4 +341,28 @@ P_GLOBAL_TEST := nvl(P_GLOBAL_TEST,'Assign default value to global variable'); -
 <store target="global" name="P_GLOBAL_TEST" ref="P_GLOBAL_TEST"/>
 ```
 
-The DEFAULT_VALUE built-in is handled in a different way than the other built-ins. The global variable is made into an in/output parameter of the stored procedure. Input is the global value in QAFE and the output is the default value state in the trigger code. The new default value will overwrite the old global value, when the business action is finished processing.
+The DEFAULT_VALUE built-in is handled in a different way than the other built-ins. The global variable is made into an in/output parameter of the stored procedure. Input is the global value in QAFE and the output is the default value stated in the trigger code. The new default value will overwrite the old global value, when the business action is finished processing.
+
+## Oracle Forms Built-In : ERASE
+
+**Oracle Forms Syntax :**
+```xml
+default_value('Assign default value to global variable','GLOBAL.TEST');
+```
+
+**QAFE Built-In Syntax in Procedure :**
+```xml
+P_GLOBAL_TEST := null; --erase(P_GLOBAL_TEST);
+```
+
+**QAFE Built-In Executed:**
+
+```xml
+<business-action ref="FORM1_BLOCK1_PUSH_BUTTON1_WMC">
+  <in name="P_GLOBAL_TEST" ref="P_GLOBAL_TEST" src="global"/>
+  <out name="P_GLOBAL_TEST" ref="P_GLOBAL_TEST"/>
+</business-action>
+<store target="global" name="P_GLOBAL_TEST" ref="P_GLOBAL_TEST"/>
+```
+
+The ERASE built-in is handled in a different way than the other built-ins. The global variable is made into an in/output parameter of the stored procedure. Input is the global value in QAFE and the output is a null value. The new default value (null) will overwrite the old global value, when the business action is finished processing.
