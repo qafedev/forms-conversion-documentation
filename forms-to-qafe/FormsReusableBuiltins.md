@@ -347,7 +347,7 @@ The DEFAULT_VALUE built-in is handled in a different way than the other built-in
 
 **Oracle Forms Syntax :**
 ```xml
-default_value('Assign default value to global variable','GLOBAL.TEST');
+erase('GLOBAL.TEST');
 ```
 
 **QAFE Built-In Syntax in Procedure :**
