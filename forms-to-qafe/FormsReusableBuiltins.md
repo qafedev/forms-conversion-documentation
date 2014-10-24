@@ -1,4 +1,28 @@
 # Oracle Forms Built-in Handling in QAFE#
+
+
+
+<!-- toc -->
+
+  * [Oracle Forms Built-Ins which can be used in Database Procedures](#oracle-forms-built-ins-which-can-be-used-in-database-procedures)
+* [Oracle Forms Built-In : SET_ITEM_PROPERTY - visible](#oracle-forms-built-in-setitemproperty-visible)
+* [Oracle Forms Built-In : SET_ITEM_PROPERTY - enabled](#oracle-forms-built-in-setitemproperty-enabled)
+* [Oracle Forms Built-In : SET_ITEM_PROPERTY - insert_allowed](#oracle-forms-built-in-setitemproperty-insertallowed)
+* [Oracle Forms Built-In : SET_ITEM_PROPERTY - update_allowed](#oracle-forms-built-in-setitemproperty-updateallowed)
+* [Oracle Forms Built-In : SET_ITEM_PROPERTY - delete_allowed](#oracle-forms-built-in-setitemproperty-deleteallowed)
+* [Oracle Forms Built-In : HIDE_VIEW](#oracle-forms-built-in-hideview)
+* [Oracle Forms Built-In : SHOW_VIEW](#oracle-forms-built-in-showview)
+* [Oracle Forms Built-In : SET_VIEW_PROPERTY](#oracle-forms-built-in-setviewproperty)
+* [Oracle Forms Built-In : GO_BLOCK](#oracle-forms-built-in-goblock)
+* [Oracle Forms Built-In : CLEAR_BLOCK](#oracle-forms-built-in-clearblock)
+* [Oracle Forms Built-In : CLEAR_LIST](#oracle-forms-built-in-clearlist)
+* [Oracle Forms Built-In : GO_ITEM](#oracle-forms-built-in-goitem)
+* [Oracle Forms Built-In : CLEAR_ITEM](#oracle-forms-built-in-clearitem)
+* [Oracle Forms Built-In : DEFAULT_VALUE](#oracle-forms-built-in-defaultvalue)
+* [Oracle Forms Built-In : ERASE](#oracle-forms-built-in-erase)
+
+<!-- toc stop -->
+
 *This document refers to FMBs with following properties.*
 
 Form Name: FORM1  
