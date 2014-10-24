@@ -1,4 +1,19 @@
 # Oracle Forms Built-in Handling in QAFE#
+
+
+<!-- toc -->
+
+* [Oracle Forms Built-Ins handling in QAFE](#oracle-forms-built-ins-handling-in-qafe)
+* [Converting Oracle Form Triggers to QAFE](#converting-oracle-form-triggers-to-qafe)
+  * [Functionality: Canvas Management](#functionality-canvas-management)
+  * [Functionality: Block Management](#functionality-block-management)
+  * [Functionality: Item Management](#functionality-item-management)
+  * [Functionality: Opening a form using built-ins](#functionality-opening-a-form-using-built-ins)
+  * [Functionality: Exception Handling](#functionality-exception-handling)
+
+<!-- toc stop -->
+
+
 *This document refers to FMBs with following properties.*
 
 Form Name: FORM1  
