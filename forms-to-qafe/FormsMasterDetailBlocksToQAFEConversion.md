@@ -1,5 +1,13 @@
 # Master-Detail Handling
 
+
+<!-- toc -->
+
+* [Post Conversion Actions](#post-conversion-actions)
+
+<!-- toc stop -->
+
+
 This section describes how master-detail blocks are handled in QAFE.
 
 Generated QAFE Code for Master-Detail Handling
