@@ -1,4 +1,42 @@
 #QAFE Forms Conversion
+
+
+<!-- toc -->
+
+* [1. Automatic conversion using the wizard](#1-automatic-conversion-using-the-wizard)
+  * [1.1 Setting up the QAFE Forms Conversion Environment](#11-setting-up-the-qafe-forms-conversion-environment)
+  * [1.2 Files generated after conversion](#12-files-generated-after-conversion)
+* [2. What to do with converted files](#2-what-to-do-with-converted-files)
+  * [2.2 Overview of the Windows, Events, BusinessActions etc Generated](#22-overview-of-the-windows-events-businessactions-etc-generated)
+  * [2.2 Overview of generated SQL scripts](#22-overview-of-generated-sql-scripts)
+    * [2.2.1 Run the generated script file containing the Object Types creation.](#221-run-the-generated-script-file-containing-the-object-types-creation)
+    * [2.2.1 Check the converted script file.](#221-check-the-converted-script-file)
+* [3. UI Changes](#3-ui-changes)
+* [4. Form Trigger Conversion](#4-form-trigger-conversion)
+  * [Trigger: WHEN-NEW-FORM-INSTANCE](#trigger-when-new-form-instance)
+    * [Scenario : When opening the Form data needs to be populated to a block](#scenario-when-opening-the-form-data-needs-to-be-populated-to-a-block)
+  * [Trigger: WHEN-NEW-FORM-INSTANCE](#trigger-when-new-form-instance)
+    * [Scenario : When opening the Form data is populated to List Items(drop-down) using a Program Unit](#scenario-when-opening-the-form-data-is-populated-to-list-itemsdrop-down-using-a-program-unit)
+* [5. Database Block Conversion (For each Block)](#5-database-block-conversion-for-each-block)
+  * [5.1 Populate Data to Block.](#51-populate-data-to-block)
+  * [5.2 Implement Block Level Triggers](#52-implement-block-level-triggers)
+    * [Trigger: POST-QUERY](#trigger-post-query)
+  * [5.3 Implement INSERT / UPDATE / DELETE operations.](#53-implement-insert-update-delete-operations)
+    * [Scenario : Save modified records of multi-record block](#scenario-save-modified-records-of-multi-record-block)
+    * [5.3.1 PRE-UPDATE trigger](#531-pre-update-trigger)
+    * [Scenario : Update additional data other than the block definition](#scenario-update-additional-data-other-than-the-block-definition)
+  * [5.4 Handle Master-Detail Relations](#54-handle-master-detail-relations)
+* [6. Item Trigger Handling](#6-item-trigger-handling)
+* [7.Styling](#7styling)
+* [8. General Tips](#8-general-tips)
+  * [8.1 Items to Ignore:](#81-items-to-ignore)
+  * [8.2  How to find a SQL Query used in an Event](#82-how-to-find-a-sql-query-used-in-an-event)
+  * [8.3 How QAFE detects the Main Window in FMB](#83-how-qafe-detects-the-main-window-in-fmb)
+  * [8.4 Changing the length of a column in database](#84-changing-the-length-of-a-column-in-database)
+
+<!-- toc stop -->
+
+
 This document explains steps to follow to convert an Oracle Forms to a fully functional QAFE application.
 
 This document is meant for QAFE Forms Conversion users with knowledge of Oracle Forms and QAFE.
