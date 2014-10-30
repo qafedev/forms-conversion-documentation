@@ -28,6 +28,8 @@
   * [5.4 Handle Master-Detail Relations](#54-handle-master-detail-relations)
 * [6. Item Trigger Handling](#6-item-trigger-handling)
 * [7.Styling](#7styling)
+  * [7.1 Direct styling using the Style-tag](#71-direct-styling-using-the-style-tag)
+  * [7.2 Styling using a CSS stylesheet](#72-styling-using-a-css-stylesheet)
 * [8. General Tips](#8-general-tips)
   * [8.1 Items to Ignore:](#81-items-to-ignore)
   * [8.2  How to find a SQL Query used in an Event](#82-how-to-find-a-sql-query-used-in-an-event)
@@ -666,8 +668,8 @@ The styling of the application can be done through directly using the style-tag 
 It is possible to directly apply the styling to a component using the style-attribute of a component. All common CSS styling attributes can be used. The example below shows a label with a specific font size, the text aligned to the right side and a gray color.
 
 ```xml
-```
 <label id="newLabel" displayname="New Label" style="font-size:12px;text-align:right; color:#ADADAD;" />
+```
 
 ### 7.2 Styling using a CSS stylesheet
 The stylesheet has to be loaded inside the presentation-tier of the application. Inside a style element, the location of the stylesheet on the system and windows using the sheet have to be specified. The star-symbol defines the use of the stylesheet on all available windows.
