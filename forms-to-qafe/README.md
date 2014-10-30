@@ -660,8 +660,38 @@ Check the trigger code for validation and implement  it in QAFE by using generat
 Check the document [Forms Builit-In Handling](FormsTriggersToQAFEConversion.md)
 
 ## 7.Styling
-Styling (CSS).
-Adapt to the corporate identity style.
+The styling of the application can be done through directly using the style-tag and using a CSS stylesheet.
+
+### 7.1 Direct styling using the Style-tag
+It is possible to directly apply the styling to a component using the style-attribute of a component. All common CSS styling attributes can be used. The example below shows a label with a specific font size, the text aligned to the right side and a gray color.
+
+```xml
+```
+<label id="newLabel" displayname="New Label" style="font-size:12px;text-align:right; color:#ADADAD;" />
+
+### 7.2 Styling using a CSS stylesheet
+The stylesheet has to be loaded inside the presentation-tier of the application. Inside a style element, the location of the stylesheet on the system and windows using the sheet have to be specified. The star-symbol defines the use of the stylesheet on all available windows.
+```xml
+<styles>
+	<style location="../css/newStyle.css" window-id="*" />
+</styles>
+```
+
+Example of the content within a CSS file. The text is transformed into all uppercase using a specific font type and size. The color of the text is changed into a dark shade of red.
+```css
+.labelStyle{
+	text-transform: uppercase;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #C40606;
+}
+```
+
+The classes defined within the CSS file are now usable. Using the class-tag the CSS styling of that class is taken into account. For example, a label can be styled with this class, as shown in the example below.
+
+```xml
+<label id="newLabel" displayname="New Label" class="labelStyle" />
+```
 
 ## 8. General Tips
 ### 8.1 Items to Ignore:
