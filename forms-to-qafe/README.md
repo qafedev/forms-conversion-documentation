@@ -711,7 +711,7 @@ This will only open the window, but will not fire any other event. This needs to
 </event>
 ```
 
-The populate data-event fetches products from the database and sets the items to a datagrid. The set component sets the data retrieved in the business-action to a component. The business-action below is the same one used in the Populate Data to Block-section. It is also possible to specify these actions directly in the onclick-event, but it is recommended to specify the actions in a separate event for reuse later on.
+The populate data-event fetches products from the database and sets the items to a datagrid. The set built-in sets the data retrieved in the business-action to a component. The business-action below is the same one used in the Populate Data to Block-section. It is also possible to specify these actions directly in the onclick-event, but it is recommended to specify the actions in a separate event for reuse later on.
 
 ```xml
 <event id="FORM1_WINDOW2_POPULATEDATA">
@@ -726,7 +726,7 @@ The populate data-event fetches products from the database and sets the items to
 Check the document [Forms Built-In Handling](FormsTriggersToQAFEConversion.md)
 
 ## 7.Styling
-The styling of the application can be done through directly using the style-tag and using a CSS stylesheet.
+The styling of the application can be done through directly using the style-attribute and using a CSS stylesheet.
 
 ### 7.1 Inline styling using the Style-tag
 It is possible to directly apply the styling to a component using the style-attribute of a component. All common CSS styling attributes can be used. The example below shows a label with a specific font size, the text aligned to the right side and a gray color.
@@ -753,7 +753,7 @@ Example of the content within a CSS file. The text is transformed into all upper
 }
 ```
 
-The class selectors defined within the CSS file are now usable. Using the class-tag the CSS styling of that class selector is taken into account. For example, a label can be styled with this class selector, as shown in the example below.
+The class selectors defined within the CSS file are now usable. Using the class-attribute the CSS styling of that class selector is taken into account. For example, a label can be styled with this class selector, as shown in the example below.
 
 ```xml
 <label id="newLabel" displayname="New Label" class="labelStyle" />
