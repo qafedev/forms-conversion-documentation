@@ -728,7 +728,7 @@ Check the document [Forms Built-In Handling](FormsTriggersToQAFEConversion.md)
 ## 7.Styling
 The styling of the application can be done through directly using the style-attribute and using a CSS stylesheet.
 
-### 7.1 Inline styling using the Style-tag
+### 7.1 Inline styling using the Style-attribute
 It is possible to directly apply the styling to a component using the style-attribute of a component. All common CSS styling attributes can be used. The example below shows a label with a specific font size, the text aligned to the right side and a gray color.
 
 ```xml
