@@ -655,21 +655,22 @@ Check Relations of the block and invoke the detail population based on selection
 Check the document [Master Detail Handling in QAFE](FormsMasterDetailBlocksToQAFEConversion.md)
 
 ## 6. Item Trigger Handling
-Check all buttons functionality (For all Buttons)
-Check the trigger code for button and implement it in QAFE by using generated database script or re-writing using QAML.
-Implement Validation for components
-Check the trigger code for validation and implement  it in QAFE by using generated database script or re-writing using QAML.
+**TODO**
+- Check all buttons functionality (For all Buttons)
+- Check the trigger code for button and implement it in QAFE by using generated - database script or re-writing using QAML.
+- Implement Validation for components
+- Check the trigger code for validation and implement  it in QAFE by using generated database script or re-writing using QAML.
+- Check the block triggers(PRE/POST-QUERY) and implement the same in QAFE using script file or modifying the select statement.
 
 ### 6.1 Opening other windows
-Check the block triggers(PRE/POST-QUERY) and implement the same in QAFE using script file or modifying the select statement.
-
+In this section, opening other windows and populating the data afterwards is explained.
 #### Trigger: WHEN-BUTTON-PRESSED
-##### Scenario : Populate look up data to multi record block
+##### Scenario : Open other window and populate data
 
 Block Definition:
 
 *Form Name* **:** FORM1  
-*Window Name* **:** WINDOW1, WINDOW2
+*Window Name* **:** WINDOW1, WINDOW2  
 *Block Name* **:** PRODUCTS, containing a datagrid PRODUCTS_DATAGRID  
 *Query Data Source Name* **:** PRODUCTS  
 *WHERE Clause* **:** product_id >= 0  
@@ -710,14 +711,14 @@ This will only open the window, but will not fire any other event. This needs to
 </event>
 ```
 
-The populate data-event fetches products from the database and sets the items to a datagrid. The business-action below is the same one used in the Populate Data to Block-section. It is also possible to specify these actions directly in the onclick-event, but it is recommended to specify the actions in a separate event for reuse later on.
+The populate data-event fetches products from the database and sets the items to a datagrid. The set component sets the data retrieved in the business-action to a component. The business-action below is the same one used in the Populate Data to Block-section. It is also possible to specify these actions directly in the onclick-event, but it is recommended to specify the actions in a separate event for reuse later on.
 
 ```xml
 <event id="FORM1_WINDOW2_POPULATEDATA">
   <business-action ref="FORM1_PRODUCTS_SELECT_BASETYPE">
     <out name="PRODUCTS_SELECT_BASETYPEOut" ref="PRODUCTS_SELECT_BASETYPEOut"/>
   </business-action>
-  <set group-name="FORM1_WINDOW2_PRODUCTS_DATAGRID" ref="PRODUCTS_SELECT_BASETYPEOut"/>
+  <set component-id="FORM1_WINDOW2_PRODUCTS_DATAGRID" ref="PRODUCTS_SELECT_BASETYPEOut"/>
 </event>
 ```
 
@@ -727,7 +728,7 @@ Check the document [Forms Built-In Handling](FormsTriggersToQAFEConversion.md)
 ## 7.Styling
 The styling of the application can be done through directly using the style-tag and using a CSS stylesheet.
 
-### 7.1 Direct styling using the Style-tag
+### 7.1 Inline styling using the Style-tag
 It is possible to directly apply the styling to a component using the style-attribute of a component. All common CSS styling attributes can be used. The example below shows a label with a specific font size, the text aligned to the right side and a gray color.
 
 ```xml
@@ -735,7 +736,7 @@ It is possible to directly apply the styling to a component using the style-attr
 ```
 
 ### 7.2 Styling using a CSS stylesheet
-The stylesheet has to be loaded inside the presentation-tier of the application. Inside a style element, the location of the stylesheet on the system and windows using the sheet have to be specified. The star-symbol defines the use of the stylesheet on all available windows.
+The stylesheet has to be loaded inside the presentation-tier of the application. Inside a style element, the location of the stylesheet on the system and windows using the sheet have to be specified. The asterisk-symbol defines the use of the stylesheet on all available windows.
 ```xml
 <styles>
 	<style location="../css/newStyle.css" window-id="*" />
@@ -752,7 +753,7 @@ Example of the content within a CSS file. The text is transformed into all upper
 }
 ```
 
-The classes defined within the CSS file are now usable. Using the class-tag the CSS styling of that class is taken into account. For example, a label can be styled with this class, as shown in the example below.
+The class selectors defined within the CSS file are now usable. Using the class-tag the CSS styling of that class selector is taken into account. For example, a label can be styled with this class selector, as shown in the example below.
 
 ```xml
 <label id="newLabel" displayname="New Label" class="labelStyle" />
