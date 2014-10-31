@@ -27,6 +27,7 @@
     * [Scenario : Update additional data other than the block definition](#scenario-update-additional-data-other-than-the-block-definition)
   * [5.4 Handle Master-Detail Relations](#54-handle-master-detail-relations)
 * [6. Item Trigger Handling](#6-item-trigger-handling)
+  * [6.1 Opening other windows](#61-opening-other-windows)
 * [7.Styling](#7styling)
   * [7.1 Direct styling using the Style-tag](#71-direct-styling-using-the-style-tag)
   * [7.2 Styling using a CSS stylesheet](#72-styling-using-a-css-stylesheet)
@@ -659,7 +660,69 @@ Check the trigger code for button and implement it in QAFE by using generated da
 Implement Validation for components
 Check the trigger code for validation and implement  it in QAFE by using generated database script or re-writing using QAML.
 
-Check the document [Forms Builit-In Handling](FormsTriggersToQAFEConversion.md)
+### 6.1 Opening other windows
+Check the block triggers(PRE/POST-QUERY) and implement the same in QAFE using script file or modifying the select statement.
+
+#### Trigger: WHEN-BUTTON-PRESSED
+##### Scenario : Populate look up data to multi record block
+
+Block Definition:
+
+*Form Name* **:** FORM1  
+*Window Name* **:** WINDOW1, WINDOW2
+*Block Name* **:** PRODUCTS, containing a datagrid PRODUCTS_DATAGRID  
+*Query Data Source Name* **:** PRODUCTS  
+*WHERE Clause* **:** product_id >= 0  
+*ORDER BY Clause* **:** product_id  
+
+**Trigger Code**
+```sql
+go_block('PRODUCTS');
+show_window('WINDOW2');
+```
+
+**Functionality Handled:**
+When the button is pressed, a window is opened with certain data already set to one or more blocks. In this case, the PRODUCTS-block within WINDOW2 is set.
+
+**QAFE Conversion:**
+The show window built-in is already supported in QAFE using the openwindow built-in.
+
+```xml
+<openwindow external="false">
+	<ref value="FORM1_WINDOW2"/>
+</openwindow>
+```
+
+This will only open the window, but will not fire any other event. This needs to be done manually. Underneath is an example of this. WINDOW2 is opened using the openwindow-tag and an event is fired to populate the data.
+
+```xml
+<event id="FORM1_WINDOW1_BLOCK1_ITEM1_TRIGGER_WHEN-BUTTON-PRESSED_onclick">
+  <listeners>
+    <listenergroup>
+      <component ref="FORM1_WINDOW1_BLOCK1_ITEM1"/>
+      <listener type="onclick"/>
+    </listenergroup>
+  </listeners>
+  <openwindow external="false">
+  	<ref ref="FORM1_WINDOW2"/>
+  </openwindow>
+  <event ref="FORM1_WINDOW2_POPULATEDATA"/>
+</event>
+```
+
+The populate data-event fetches products from the database and sets the items to a datagrid. The business-action below is the same one used in the Populate Data to Block-section. It is also possible to specify these actions directly in the onclick-event, but it is recommended to specify the actions in a separate event for reuse later on.
+
+```xml
+<event id="FORM1_WINDOW2_POPULATEDATA">
+  <business-action ref="FORM1_PRODUCTS_SELECT_BASETYPE">
+    <out name="PRODUCTS_SELECT_BASETYPEOut" ref="PRODUCTS_SELECT_BASETYPEOut"/>
+  </business-action>
+  <set group-name="FORM1_WINDOW2_PRODUCTS_DATAGRID" ref="PRODUCTS_SELECT_BASETYPEOut"/>
+</event>
+```
+
+### 6.2 Further information
+Check the document [Forms Built-In Handling](FormsTriggersToQAFEConversion.md)
 
 ## 7.Styling
 The styling of the application can be done through directly using the style-tag and using a CSS stylesheet.
