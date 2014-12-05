@@ -51,11 +51,7 @@ To Execute any built-In in your script file you have to prefix the built-in with
 For Example your trigger code use SET_ITEM_PROPERTY('BLOCK1.ITEM1', visible, property_false);
 
 This will be converted in script file as,
-SET_ITEM_PROPERTY('BLOCK1.ITEM1', visible, property_false);
-
-You have to change this code as below to execute this built-in,
-
-QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUILT_IN.property_false);
+QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUILT_IN.const_false);
 
 When this line get executed QAFE_BUILT_IN Package collect this in QAFE_BUILT_IN_LIST variable.
 
@@ -71,7 +67,7 @@ QAFE_BUILT_IN_LIST is a return value for all procedures generated and QAFE Engin
 
 **QAFE Built-In Syntax in Procedure :**
 ```sql
-QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUILT_IN.property_false);
+QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUILT_IN.const_false);
 ```
 
 **QAFE Built-In Executed:**
@@ -92,7 +88,7 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
 
 **QAFE Built-In Syntax in Procedure :**
 ```sql
-  QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.enabled, QAFE_BUILT_IN.property_false);
+  QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.enabled, QAFE_BUILT_IN.const_false);
 
 ```
 
@@ -113,7 +109,7 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
 
 **QAFE Built-In Syntax in Procedure :**
 ```sql
-  QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.property_false);
+  QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.const_false);
 ```
 
 **QAFE Built-In Executed:**
@@ -133,7 +129,7 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
 
 **QAFE Built-In Syntax in Procedure :**
 ```sql
-  QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.property_false);
+  QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.const_false);
 ```
 
 **QAFE Built-In Executed:**
@@ -153,7 +149,7 @@ QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.visible, QAFE_BUIL
 
 **QAFE Built-In Syntax in Procedure :**
 ```sql
-QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.property_false);
+QAFE_BUILT_IN.SET_ITEM_PROPERTY('BLOCK1.ITEM1', QAFE_BUILT_IN.editable, QAFE_BUILT_IN.const_false);
 ```
 
 **QAFE Built-In Executed:**
@@ -217,7 +213,7 @@ Panel with name CANVAS1 is made visible
 
 **QAFE Built-In Syntax in Procedure :**
 ```sql
-QAFE_BUILT_IN.set_view_property ('CANVAS1', QAFE_BUILT_IN.visible, QAFE_BUILT_IN.property_true);
+QAFE_BUILT_IN.set_view_property ('CANVAS1', QAFE_BUILT_IN.visible, QAFE_BUILT_IN.const_true);
 ```
 
 **QAFE Built-In Executed:**
