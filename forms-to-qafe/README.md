@@ -80,6 +80,12 @@ Run the converted application and check the UI.
 ### 2.2 Overview of generated SQL scripts
 Check the generated sql scripts in the database, located in a folder with name of the FMB converted under src/main/script folder.
 
+Note that in the scrips folder, a MAIN and STUBS script is generated. 
+The main difference is that STUBS only has empty bodies of the triggers and programming units of your form,
+while the main script has most of its logic converted. 
+
+The reason we supply both scripts is that in some cases, logic can not be converted, due to pl/sql not having a way to implement some functionality, or any other such reason. This might give problems when trying to compile the script in the database. In this case, you could consider to use the stubs script, and use the main script as reference to implement the bodies.
+
 #### 2.2.1 Run the generated script file containing the Object Types creation.
 
 #### 2.2.1 Check the converted script file.
