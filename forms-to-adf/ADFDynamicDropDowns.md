@@ -12,7 +12,6 @@
 
 All Oracle form List Items are converted to ADF SelectOneChoice. All items mentioned in the Elements List will be converted as static choice items.
 If there are no items defined in the  Elements List we generate the ADF artifacts necessary to populate this dropdown dynamically.
-Artifacts Generated:
 
 ##Artifacts Generated
 
