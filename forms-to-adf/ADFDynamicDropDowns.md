@@ -64,7 +64,7 @@ The new data will be populated in the corresponding SelectOneChoice.
     SELECT distinct content_name DisplayNameField   , to_char(mentc_id) ValueField
     FROM mentc order by content_name
 ```
-### Use a Record Group VO generated to fill a dropdown
+## Use a Record Group VO generated to fill a dropdown
 The example below is for a Record Group VO without any input variables.
 
 Record groups are converted to View Objects, while retaining the query with minimal changes. The VO also includes input parameters, if available. The record group can be found with file name with format <RecordGroupName>VO.xml.
@@ -89,7 +89,7 @@ Record groups are converted to View Objects, while retaining the query with mini
 </ViewObject>
 ```
 
-##Post Generation Steps to use a Record Group VO in a dropdown
+### Post Generation Steps to use a Record Group VO in a dropdown
 This step is very easy, when a Record Group VO does not have any input variables. Make sure that the dropdown is visible within a JSF Fragment in designer mode. Open the Data control in the Data control menu and select a View Object. Drag and drop the object itself in the dropdown. 
 
 In the Edit List Binding pop-up, the display attribute has to be set. When clicking on OK, the binding will be set and/or updated. Press OK to confirm all new bindings. All underlying code including the binding, VO iterator and dat control elements are automatically generated. The final step is to just start the application and the dropdown should be filled automatically.
