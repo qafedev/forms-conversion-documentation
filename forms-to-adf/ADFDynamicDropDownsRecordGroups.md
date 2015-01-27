@@ -2,7 +2,7 @@
 The example below is for a Record Group VO without any input variables.
 
 ##Artifacts Generated
-Record groups are converted to View Objects, while retaining the query with minimal changes. The VO also includes input parameters, if available. The record group can be found with file name with format <RecordGroupName>VO.xml.
+Record groups are converted to View Objects, while retaining the query with minimal changes. The VO also includes input parameters, if available. The record group can be found with file name with format {RecordGroupName}VO.xml.
 
 ```xml 
 <ViewObject xmlns="http://xmlns.oracle.com/bc4j" Name="MvVO" Version="12.1.2.66.68" InheritPersonalization="merge" BindingStyle="OracleName" CustomQuery="true" PageIterMode="Full" ComponentClass="com.qualogy.qafe.model.view.BaseVOImpl" FetchMode="FETCH_AS_NEEDED" FetchSize="10">
