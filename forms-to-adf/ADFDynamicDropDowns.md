@@ -16,7 +16,7 @@ Artifacts Generated:
 
 ##Artifacts Generated
 
-1. View object is generated with name <ItemName>ListVO with a dummy custom SQL Query.
+1. View object is generated with name {ItemName}ListVO with a dummy custom SQL Query.
 
   ```sql
     select sysdate ValueField, sysdate DisplayNameField from dual;
@@ -37,6 +37,7 @@ Artifacts Generated:
   </list>
 ```
 3. SelectOneChoice is created
+
   ```xml
     <af:selectOneChoice id="HSD0004F_DROPDOWN_EMP_CIVIL_STATE"
         value="#{bindings.EMP_CIVILSTATE.inputValue}" valuePassThru="true">
