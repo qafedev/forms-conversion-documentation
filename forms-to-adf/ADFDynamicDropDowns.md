@@ -85,4 +85,6 @@ The new data will be populated in the corresponding SelectOneChoice.
     FROM mentc order by content_name
 ```
 ### Use a Record Group VO with no input variables to fill a dropdown
-This step is very easy, when a Record Group VO does not have any input variables. Make sure that the dropdown is visible within a JSF Fragment in designer mode. Open the Data control in the Data control menu and select a View Object. Drag and drop the object itself in the dropdown. In the Edit List Binding pop-up, the display attribute has to be set. When clicking on OK, the binding will be set and/or updated. Press OK to confirm all new bindings. All underlying code including the binding, VO iterator and dat control elements are automatically generated. The final step is to just start the application and the dropdown should be filled automatically.
+This step is very easy, when a Record Group VO does not have any input variables. Make sure that the dropdown is visible within a JSF Fragment in designer mode. Open the Data control in the Data control menu and select a View Object. Drag and drop the object itself in the dropdown. 
+
+In the Edit List Binding pop-up, the display attribute has to be set. When clicking on OK, the binding will be set and/or updated. Press OK to confirm all new bindings. All underlying code including the binding, VO iterator and dat control elements are automatically generated. The final step is to just start the application and the dropdown should be filled automatically.
