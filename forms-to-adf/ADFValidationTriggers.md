@@ -5,7 +5,7 @@
 
 The student application (EX10_01) is used to explain the validation scenario. In the application we are considering validation for the zip code text field component within the STUDENT block. Validation checks if the zip code is available in the database or not. If validation fails, it shows proper message to the user.
 
-(screenshot)
+![Student Form Application](../assets/images/adf/student-application-validation.png "Student Form Application")
 
 ### Validation trigger in the example Oracle Form
 The ZIP_CODE item has a validation trigger as follows:
