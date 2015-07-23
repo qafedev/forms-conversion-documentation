@@ -1,13 +1,17 @@
 # Post Conversion Steps - Validation Trigger
 
-In Oracle Form, when an item has a validation trigger, QAFE conversion tool converts them to different artifacts.
+## Context 
 
-**Assume the following validation code in a FMB**
+The student application(EX01_10) is used to explain the validation scenario. In the application we are considering validation for the zip code text field component. Validation checks if the zip code is available in the database or not. If validation fails, it shows proper message to the user.
+
+(screenshot)
+
+The ZIP_CODE item has a validation trigger as follows:
 ```sql
 DECLARE
 	CURSOR c_get_zip is SELECT city, state
-											FROM zipcode
-											WHERE zipcode.zip = :STUDENT.ZIP;
+			FROM zipcode
+			WHERE zipcode.zip = :STUDENT.ZIP;
 	v_invalid BOOLEAN;
 	x number;
 BEGIN
@@ -20,8 +24,13 @@ BEGIN
 	END IF;
 END;
 ```
+# Artifacts generated to be taken care are as follows 
+- StudentEO.xml
+- StudentEOImpl.java
+- Database Object type representing the block with ZIP_CODE (OBJECTS_MAIN_SCRIPT_EX10_01.sql)
+- Database procedure to handle validation (PURE_MAIN_SCRIPT_EX10_01.sql)
 
-The SQL code mentioned above will be converted to:
+The validation trigger code will be converted and available in PURE_MAIN_SCRIPT_EX10_01.sql:
 ```sql
 procedure STUDENT_ZIP_WVI (P_STUDENT IN OUT ADF_EX10_01_STUDENT)  is 
   begin 		DECLARE
