@@ -17,6 +17,8 @@ Check [here](http://www.qafe.com/developer-docs/oracle-forms/qafe-forms-wizard/)
 
 [Post Conversion Steps - Dynamic DropDown](ADFDynamicDropDowns.md)
 
+[Post Conversion Steps - Dynamic DropDown Using Record Groups](ADFDynamicDropDownsRecordGroups.md)
+
 [Post Conversion Steps - Tree](ADFDynamicTree.md)
 
 [Post Conversion Steps - Validation Trigger](ADFValidationTriggers.md)

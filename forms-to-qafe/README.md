@@ -433,7 +433,7 @@ group-name (FORM1_PRODUCTS_ALL) corresponding to the block. So we can use ```<se
 
 Now the data will be populated only to the database items which corresponds to the columns in table PRODUCTS.
 
-As part of conversion POST-QUERY trigger code will be created as a database procedure and is available at src/main/script/FORM1/MAIN_SCRIPT_Package_Script_FORM1.sql  file. Also corresponding call statements, integration-method and business action are generated.  
+As part of conversion POST-QUERY trigger code will be created as a database procedure and is available at src/main/script/FORM1/MAIN_SCRIPT_COMPLEX_Package_Script_FORM1.sql or MAIN_SCRIPT_PURE_Package_Script_FORM1.sql file. Also corresponding call statements, integration-method and business action are generated.  
 Apart from this one event is generated in FORM1-global-events.qaml file with id ```<event id="FORM1_RODUCTS_BLOCKTRIGGER_POST-QUERY"> ``` which is invoking the corresponding business action with proper inputs and outputs.
 
 **Change the select statement to retrieve data including the lookup data**
