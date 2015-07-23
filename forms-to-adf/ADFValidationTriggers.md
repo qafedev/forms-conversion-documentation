@@ -91,7 +91,9 @@ The validateZIP method will call the validateAttribute method with the following
 
 As per the above code execution the STUDENT_ZIP_WVI stored procedure will get called. ADF code expects an attribute with name MESSAGE in the output object type. Based on the message value, ADF code determines whether the validation was successful or not. The code can be found in BaseEOImpl.validateAttribute method. BaseEOImpl is the base class for all entities.
 
-##Post steps
+To make the validation working in ADF for the zip code example, some manual steps are still necessary.
+
+##Manual Steps
 In order to run the generated ADF application properly with validation, some post-modifications should be made in the generated sql script, located in the scripts folder in the output:
 
 1. Add the following column to all the generated database objects where you want to use validation:
