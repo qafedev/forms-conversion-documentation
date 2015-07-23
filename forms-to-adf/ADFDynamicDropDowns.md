@@ -15,7 +15,7 @@ If there are no items defined in the  Elements List we generate the ADF artifact
 
 ##Artifacts Generated
 
-1. View object is generated with name <ItemName>ListVO with a dummy custom SQL Query.
+1. View object is generated with name {ItemName}ListVO with a dummy custom SQL Query.
 
   ```sql
     select sysdate ValueField, sysdate DisplayNameField from dual;
@@ -36,6 +36,7 @@ If there are no items defined in the  Elements List we generate the ADF artifact
   </list>
 ```
 3. SelectOneChoice is created
+
   ```xml
     <af:selectOneChoice id="HSD0004F_DROPDOWN_EMP_CIVIL_STATE"
         value="#{bindings.EMP_CIVILSTATE.inputValue}" valuePassThru="true">
@@ -63,3 +64,4 @@ The new data will be populated in the corresponding SelectOneChoice.
     SELECT distinct content_name DisplayNameField   , to_char(mentc_id) ValueField
     FROM mentc order by content_name
 ```
+

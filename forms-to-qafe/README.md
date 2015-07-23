@@ -27,7 +27,10 @@
     * [Scenario : Update additional data other than the block definition](#scenario-update-additional-data-other-than-the-block-definition)
   * [5.4 Handle Master-Detail Relations](#54-handle-master-detail-relations)
 * [6. Item Trigger Handling](#6-item-trigger-handling)
+  * [6.1 Opening other windows](#61-opening-other-windows)
 * [7.Styling](#7styling)
+  * [7.1 Direct styling using the Style-tag](#71-direct-styling-using-the-style-tag)
+  * [7.2 Styling using a CSS stylesheet](#72-styling-using-a-css-stylesheet)
 * [8. General Tips](#8-general-tips)
   * [8.1 Items to Ignore:](#81-items-to-ignore)
   * [8.2  How to find a SQL Query used in an Event](#82-how-to-find-a-sql-query-used-in-an-event)
@@ -436,7 +439,7 @@ group-name (FORM1_PRODUCTS_ALL) corresponding to the block. So we can use ```<se
 
 Now the data will be populated only to the database items which corresponds to the columns in table PRODUCTS.
 
-As part of conversion POST-QUERY trigger code will be created as a database procedure and is available at src/main/script/FORM1/MAIN_SCRIPT_Package_Script_FORM1.sql  file. Also corresponding call statements, integration-method and business action are generated.  
+As part of conversion POST-QUERY trigger code will be created as a database procedure and is available at src/main/script/FORM1/MAIN_SCRIPT_COMPLEX_Package_Script_FORM1.sql or MAIN_SCRIPT_PURE_Package_Script_FORM1.sql file. Also corresponding call statements, integration-method and business action are generated.  
 Apart from this one event is generated in FORM1-global-events.qaml file with id ```<event id="FORM1_RODUCTS_BLOCKTRIGGER_POST-QUERY"> ``` which is invoking the corresponding business action with proper inputs and outputs.
 
 **Change the select statement to retrieve data including the lookup data**
@@ -658,16 +661,109 @@ Check Relations of the block and invoke the detail population based on selection
 Check the document [Master Detail Handling in QAFE](FormsMasterDetailBlocksToQAFEConversion.md)
 
 ## 6. Item Trigger Handling
-Check all buttons functionality (For all Buttons)
-Check the trigger code for button and implement it in QAFE by using generated database script or re-writing using QAML.
-Implement Validation for components
-Check the trigger code for validation and implement  it in QAFE by using generated database script or re-writing using QAML.
+**TODO**
+- Check all buttons functionality (For all Buttons)
+- Check the trigger code for button and implement it in QAFE by using generated - database script or re-writing using QAML.
+- Implement Validation for components
+- Check the trigger code for validation and implement  it in QAFE by using generated database script or re-writing using QAML.
+- Check the block triggers(PRE/POST-QUERY) and implement the same in QAFE using script file or modifying the select statement.
 
-Check the document [Forms Builit-In Handling](FormsTriggersToQAFEConversion.md)
+### 6.1 Opening other windows
+In this section, opening other windows and populating the data afterwards is explained.
+#### Trigger: WHEN-BUTTON-PRESSED
+##### Scenario : Open other window and populate data
+
+Block Definition:
+
+*Form Name* **:** FORM1  
+*Window Name* **:** WINDOW1, WINDOW2  
+*Block Name* **:** PRODUCTS, containing a datagrid PRODUCTS_DATAGRID  
+*Query Data Source Name* **:** PRODUCTS  
+*WHERE Clause* **:** product_id >= 0  
+*ORDER BY Clause* **:** product_id  
+
+**Trigger Code**
+```sql
+go_block('PRODUCTS');
+show_window('WINDOW2');
+```
+
+**Functionality Handled:**
+When the button is pressed, a window is opened with certain data already set to one or more blocks. In this case, the PRODUCTS-block within WINDOW2 is set.
+
+**QAFE Conversion:**
+The show window built-in is already supported in QAFE using the openwindow built-in.
+
+```xml
+<openwindow external="false">
+	<ref value="FORM1_WINDOW2"/>
+</openwindow>
+```
+
+This will only open the window, but will not fire any other event. This needs to be done manually. Underneath is an example of this. WINDOW2 is opened using the openwindow-tag and an event is fired to populate the data.
+
+```xml
+<event id="FORM1_WINDOW1_BLOCK1_ITEM1_TRIGGER_WHEN-BUTTON-PRESSED_onclick">
+  <listeners>
+    <listenergroup>
+      <component ref="FORM1_WINDOW1_BLOCK1_ITEM1"/>
+      <listener type="onclick"/>
+    </listenergroup>
+  </listeners>
+  <openwindow external="false">
+  	<ref ref="FORM1_WINDOW2"/>
+  </openwindow>
+  <event ref="FORM1_WINDOW2_POPULATEDATA"/>
+</event>
+```
+
+The populate data-event fetches products from the database and sets the items to a datagrid. The set built-in sets the data retrieved in the business-action to a component. The business-action below is the same one used in the Populate Data to Block-section. It is also possible to specify these actions directly in the onclick-event, but it is recommended to specify the actions in a separate event for reuse later on.
+
+```xml
+<event id="FORM1_WINDOW2_POPULATEDATA">
+  <business-action ref="FORM1_PRODUCTS_SELECT_BASETYPE">
+    <out name="PRODUCTS_SELECT_BASETYPEOut" ref="PRODUCTS_SELECT_BASETYPEOut"/>
+  </business-action>
+  <set component-id="FORM1_WINDOW2_PRODUCTS_DATAGRID" ref="PRODUCTS_SELECT_BASETYPEOut"/>
+</event>
+```
+
+### 6.2 Further information
+Check the document [Forms Built-In Handling](FormsTriggersToQAFEConversion.md)
 
 ## 7.Styling
-Styling (CSS).
-Adapt to the corporate identity style.
+The styling of the application can be done through directly using the style-attribute and using a CSS stylesheet.
+
+### 7.1 Inline styling using the Style-attribute
+It is possible to directly apply the styling to a component using the style-attribute of a component. All common CSS styling attributes can be used. The example below shows a label with a specific font size, the text aligned to the right side and a gray color.
+
+```xml
+<label id="newLabel" displayname="New Label" style="font-size:12px;text-align:right; color:#ADADAD;" />
+```
+
+### 7.2 Styling using a CSS stylesheet
+The stylesheet has to be loaded inside the presentation-tier of the application. Inside a style element, the location of the stylesheet on the system and windows using the sheet have to be specified. The asterisk-symbol defines the use of the stylesheet on all available windows.
+```xml
+<styles>
+	<style location="../css/newStyle.css" window-id="*" />
+</styles>
+```
+
+Example of the content within a CSS file. The text is transformed into all uppercase using a specific font type and size. The color of the text is changed into a dark shade of red.
+```css
+.labelStyle{
+	text-transform: uppercase;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #C40606;
+}
+```
+
+The class selectors defined within the CSS file are now usable. Using the class-attribute the CSS styling of that class selector is taken into account. For example, a label can be styled with this class selector, as shown in the example below.
+
+```xml
+<label id="newLabel" displayname="New Label" class="labelStyle" />
+```
 
 ## 8. General Tips
 ### 8.1 Items to Ignore:
