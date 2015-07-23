@@ -102,9 +102,9 @@ In order to run the generated ADF application properly with validation, some pos
   MESSAGE VARCHAR2(1000);
   ```
 2. Remove the following in the body of all procedures:
-```sql
-RAISE FORM_TRIGGER_FAILURE()  
-```
+  ```sql
+  RAISE FORM_TRIGGER_FAILURE()  
+  ```
 *NOTE*: FORM_TRIGGER_FAILURE is a forms builtin which cannot be used in the database. Similarly remove/re-write other forms builtins.
 
 3. Modify the Message built-in in the body of the procedure:
