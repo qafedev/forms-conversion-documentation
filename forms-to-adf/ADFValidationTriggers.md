@@ -1,11 +1,13 @@
 # Post Conversion Steps - Validation Trigger
 
-## Context 
+## Initial Oracle Form and conversion result
+### Example 
 
-The student application(EX01_10) is used to explain the validation scenario. In the application we are considering validation for the zip code text field component. Validation checks if the zip code is available in the database or not. If validation fails, it shows proper message to the user.
+The student application (EX10_01) is used to explain the validation scenario. In the application we are considering validation for the zip code text field component within the STUDENT block. Validation checks if the zip code is available in the database or not. If validation fails, it shows proper message to the user.
 
 (screenshot)
 
+### Validation trigger in the example Oracle Form
 The ZIP_CODE item has a validation trigger as follows:
 ```sql
 DECLARE
@@ -24,11 +26,11 @@ BEGIN
 	END IF;
 END;
 ```
-# Artifacts generated to be taken care are as follows 
-- StudentEO.xml
-- StudentEOImpl.java
-- Database Object type representing the block with ZIP_CODE (OBJECTS_MAIN_SCRIPT_EX10_01.sql)
-- Database procedure to handle validation (PURE_MAIN_SCRIPT_EX10_01.sql)
+### Artifacts generated to handle validation: 
+- **StudentEO.xml**: Entity object representing the student block.
+- **StudentEOImpl.java**: Validation implementation class.
+- **OBJECTS_MAIN_SCRIPT_EX10_01.sql**: Script file with Database Object types representing the blocks in EX10_01.
+- **PURE_MAIN_SCRIPT_EX10_01.sql**: Script file with database procedure to handle validation of ZIP_CODE.
 
 The validation trigger code will be converted and available in PURE_MAIN_SCRIPT_EX10_01.sql:
 ```sql
@@ -67,8 +69,29 @@ CREATE OR REPLACE TYPE ADF_EX10_01_STUDENT AS OBJECT
  ,CONSTRUCTOR FUNCTION  ADF_EX10_01_STUDENT  RETURN SELF AS RESULT
  );
 ```
+### Validation Flow
+In StudentEO we generate the attribute ZIP as follows.
+```java
+<Attribute Name="ZIP" IsNotNull="false" Type="java.lang.String" Precision="5" ColumnType="VARCHAR2" TableName="STUDENT" ColumnName="ZIP" SQLType="VARCHAR">
+    <MethodValidationBean xmlns="http://xmlns.oracle.com/bc4j" Name="STUDENT_ZIP_WVI" MethodName="validateZIP" ResId="DUMMY"/>
+  </Attribute>
+```
 
-#Post steps
+The MethodValidationBean will trigger the validateZIP method in StudentEOImpl class:
+```java
+public boolean validateZIP(java.lang.String zip) {
+	return validateAttribute("ZIP", zip, "ADF_EX10_01_TRIGGERS.STUDENT_ZIP_WVI(?)", "ADF_EX10_01_STUDENT");
+}
+```
+The validateZIP method will call the validateAttribute method with the following parameters:
+- "ZIP": The attribute name to validate
+- zip: Current value for the above attribute
+- "ADF_EX10_01_TRIGGERS.STUDENT_ZIP_WVI(?)": The name of the stored procedure, which performs the validation
+- "ADF_EX10_01_STUDENT": The database object type representing the student entity/block
+
+As per the above code execution the STUDENT_ZIP_WVI stored procedure will get called. ADF code expects an attribute with name MESSAGE in the output object type. Based on the message value, ADF code determines whether the validation was successful or not. The code can be found in BaseEOImpl.validateAttribute method. BaseEOImpl is the base class for all entities.
+
+##Post steps
 In order to run the generated ADF application properly with validation, some post-modifications should be made in the generated sql script, located in the scripts folder in the output:
 
 1. Add the following column to all the generated database objects where you want to use validation:
